@@ -15,6 +15,8 @@ namespace PlatformaSocialBookmarking.Models
 
         public int? BookmarkId { get; set; }
 
+        public virtual ApplicationUser? User { get; set; }
+
         public virtual Bookmark? Bookmark { get; set; }
 
     }

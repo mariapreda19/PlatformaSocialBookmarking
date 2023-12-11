@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PlatformaSocialBookmarking.Models.Comment
+
+
 @{
+    ViewBag.Title = "Edit";
 }
+
+<h2>Editare comentariu</h2>
+<br />
+
+
+@using (Html.BeginForm(controllerName: "Comments", actionName: "Edit",
+      method: FormMethod.Post, routeValues: new { id = Model.Id }))
+
+{
+    @Html.Label("Content", "Continut comentariu")
+
+    <br />
+
+    @Html.Editor("Content", new { @class = "form-control" })
+    <br />
+
+    @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
+
+    <br />
+    <br />
+
+    <button class="btn  btn-primary" type="submit">Editeaza comentariul</button>
+
+}
+
