@@ -7,7 +7,7 @@ namespace PlatformaSocialBookmarking.Models
     public class Image
     { 
 
-            [Key]
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Title required")]
@@ -23,6 +23,7 @@ namespace PlatformaSocialBookmarking.Models
         [Required(ErrorMessage = "Vrem sa stim cand faci ce faci")]
         public DateTime Date { get; set; }
 
+        [Required(ErrorMessage = "Categoria este obligatorie")]
         public int? CategoryId { get; set; }
 
         public string? UserId { get; set; }
