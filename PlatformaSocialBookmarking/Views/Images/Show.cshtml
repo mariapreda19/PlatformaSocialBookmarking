@@ -1,1 +1,38 @@
-﻿
+﻿@model PlatformaSocialBookmarking.Models.Image
+
+
+<div class="d-flex justify-content-center">
+
+    <a class="btn btn-outline-success" href="/Images/Index/">Afisare imagini</a>
+
+    <a class="btn btn-outline-success" href="/Images/New">Adauga imagine</a>
+
+</div>
+
+
+<div class="card">
+
+    @Html.Partial("ImageInfo", Model)
+
+    
+
+    <div class="d-flex flex-row justify-content-between">
+
+        <a class="btn btn-success" href="/Images/Edit/@Model.Id">Editeaza postarea</a>
+
+        <form method="post" action="/Images/Delete/@Model.Id">
+
+            <button class="btn btn-danger" type="submit">Sterge postare</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<br />
+<br />
+
+
+
+

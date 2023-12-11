@@ -13,9 +13,9 @@ namespace PlatformaSocialBookmarking.Models
 
         public DateTime Date { get; set; }
 
-        public int? ImageId { get; set; }
+        public int? BookmarkId { get; set; }
 
-        public virtual Image? Image { get; set; }
+        public virtual Bookmark? Bookmark { get; set; }
 
     }
 }

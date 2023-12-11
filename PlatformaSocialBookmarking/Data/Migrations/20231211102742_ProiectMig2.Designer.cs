@@ -12,7 +12,7 @@ using PlatformaSocialBookmarking.Data;
 namespace PlatformaSocialBookmarking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231210162532_ProiectMig2")]
+    [Migration("20231211102742_ProiectMig2")]
     partial class ProiectMig2
     {
         /// <inheritdoc />
@@ -238,17 +238,12 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CommentId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("Votes")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CommentId");
 
                     b.ToTable("Bookmarks");
                 });
@@ -278,6 +273,9 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("BookmarkId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -285,12 +283,11 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("BookmarkId")
+                        .IsUnique()
+                        .HasFilter("[BookmarkId] IS NOT NULL");
 
                     b.ToTable("Comments");
                 });
@@ -382,22 +379,16 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("PlatformaSocialBookmarking.Models.Comment", "Comment")
-                        .WithMany()
-                        .HasForeignKey("CommentId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Comment", b =>
                 {
-                    b.HasOne("PlatformaSocialBookmarking.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
+                    b.HasOne("PlatformaSocialBookmarking.Models.Bookmark", "Bookmark")
+                        .WithOne("Comment")
+                        .HasForeignKey("PlatformaSocialBookmarking.Models.Comment", "BookmarkId");
 
-                    b.Navigation("Image");
+                    b.Navigation("Bookmark");
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Image", b =>
@@ -407,6 +398,11 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark", b =>
+                {
+                    b.Navigation("Comment");
                 });
 #pragma warning restore 612, 618
         }
