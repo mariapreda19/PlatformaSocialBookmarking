@@ -12,8 +12,8 @@ using PlatformaSocialBookmarking.Data;
 namespace PlatformaSocialBookmarking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231211132311_ProiectMig3")]
-    partial class ProiectMig3
+    [Migration("20231214111752_Migratie")]
+    partial class Migratie
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -311,6 +311,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CategoryId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -422,7 +423,9 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                 {
                     b.HasOne("PlatformaSocialBookmarking.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PlatformaSocialBookmarking.Models.ApplicationUser", "User")
                         .WithMany("Images")
