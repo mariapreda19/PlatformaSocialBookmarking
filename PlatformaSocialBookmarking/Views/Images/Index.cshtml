@@ -1,38 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-<h2 class="text-center">Afisare postari</h>
+<style>
+    .masonry-container {
+        column-count: 4;
+        column-gap: 16px; /* Adjust the gap between columns as needed */
+        margin: 0 auto; /* Center the columns */
+    }
 
+    .card {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 16px; /* Adjust the margin between cards as needed */
+        break-inside: avoid-column; /* Prevent breaking inside columns */
+        overflow: hidden;
+    }
 
-@if(ViewBag.Message != null)
+    .card img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover img {
+        transform: scale(1.05);
+    }
+
+    //TODO nu e responsive pt ca nu pot pune media aici. tot stilul trebuie pus intr un fisier css later on
+</style>
+
+<h2 class="text-center">Afisare postari</h2>
+
+@if (ViewBag.Message != null)
 {
-        <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
-
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
 }
 
-
 <div class="d-flex justify-content-center">
-
     <a class="btn btn-outline-success" href="/Categories/Index/">Afisare categorii</a>
     <br />
     <a class="btn btn-outline-success" href="/Images/New">Adauga postare</a>
     <br />
-
 </div>
 
-
-@foreach (PlatformaSocialBookmarking.Models.Image image in ViewBag.Images)
-{
-      <div class="card">
-          @Html.Partial("ImageInfo", image)
-
-          <a class="btn btn-success" href="/Images/Show/@image.Id">Afisare postare</a>
-      </div>
-      
-      <br />
-      <br />
-}
+<div class="masonry-container">
+    @foreach (PlatformaSocialBookmarking.Models.Image image in ViewBag.Images)
+    {
+        <div class="card">
+            <!-- Displaying the image dynamically -->
+            <a href="/Images/Show/@image.Id">
+                <img src="@image.Url" alt="Image" class="img-fluid" />
+            </a>
+        </div>
+    }
+</div>
