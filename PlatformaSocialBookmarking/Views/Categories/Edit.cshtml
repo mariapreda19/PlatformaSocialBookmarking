@@ -1,26 +1,27 @@
 ﻿@model PlatformaSocialBookmarking.Models.Category
 
-
 @{
     ViewBag.Title = "Editare categorie";
 }
 
 <h2>@ViewBag.Title</h2>
 
-
 @using (Html.BeginForm(controllerName: "Categories", actionName: "Edit", method: FormMethod.Post,
-      routeValues: new { id = Model.Id }))
+     routeValues: new { id = Model.Id }))
 {
-    @Html.Label("CategoryName", "Denumire categorie")
-    <br />
-    @Html.Editor("CategoryName")
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryName, "Denumire categorie")
+        @Html.EditorFor(m => m.CategoryName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
+    </div>
 
-    @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
-    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.CoverUrl, "URL Imagine")
+        @Html.EditorFor(m => m.CoverUrl, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CoverUrl, null, new { @class = "text-danger" })
+    </div>
 
-    <br />
-
-    <button class="btn btn-success" type="submit">Modifica categoria</button>
+    <div class="form-group">
+        <button class="btn btn-success" type="submit">Modifica categoria</button>
+    </div>
 }
-
-

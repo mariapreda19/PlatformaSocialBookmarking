@@ -10,6 +10,7 @@ namespace PlatformaSocialBookmarking.Models
         [Required(ErrorMessage = "Your application had a stroke: cjkdgskcjs")]
 
         public string CategoryName { get; set; }
+        public string CoverUrl { get; set; }
 
     }
 }

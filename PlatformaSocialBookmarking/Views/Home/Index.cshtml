@@ -1,8 +1,82 @@
-﻿@{
+﻿@model List<PlatformaSocialBookmarking.Models.Category>
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<style>
+    .image-container {
+        position: relative;
+        overflow: hidden; /* Ensure the overlay doesn't overflow */
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value to control transparency */
+        z-index: 1; /* Set z-index to 1 */
+        transition: background-color 0.3s; /* Smooth transition effect */
+    }
+
+    .card:hover .image-overlay {
+        background-color: rgba(255, 255, 255, 0); /* Hover effect: make overlay transparent */
+    }
+
+    .card-body {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 2; /* Set z-index to 2, a value higher than the overlay */
+        color: black; /* Dark grey text color */
+        font-size: 2em; /* Adjust the font size as needed */
+        font-weight: bold; /* Make the text bold */
+        transition: opacity 0.3s; /* Smooth transition effect for opacity */
+    }
+
+    .card:hover .card-body {
+        opacity: 0; /* Hover effect: make text disappear */
+    }
+
+    .card-title {
+        margin-bottom: 0; /* Remove default margin for cleaner appearance */
+    }
+
+    .card-link {
+        color: inherit; /* Use the default text color */
+        text-decoration: none; /* Remove underline */
+    }
+
+        .card-link:hover {
+            text-decoration: underline; /* Hover effect: underline when hovered */
+        }
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var category in Model.Take(3))
+        {
+            <div class="col-md-4 mb-4">
+                <a href="@Url.Action("Show", "Categories", new { id = category.Id })" class="card card-link image-container">
+                    <div class="image-overlay"></div>
+                    <div style="position: relative; overflow: hidden; height: 0; padding-bottom: 33.33%;">
+                        <img src="@category.CoverUrl" class="card-img-top" alt="Category Cover" style="position: absolute; width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@category.CategoryName</h5>
+                        <!-- You can add more information about the category here if needed -->
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
 </div>

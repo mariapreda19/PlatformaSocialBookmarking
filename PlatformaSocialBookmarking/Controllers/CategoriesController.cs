@@ -69,6 +69,7 @@ namespace PlatformaSocialBookmarking.Controllers
             {
 
                 category.CategoryName = requestCategory.CategoryName;
+                category.CoverUrl = requestCategory.CoverUrl;
                 db.SaveChanges();
                 TempData["message"] = "Categoria a fost modificata!";
                 return RedirectToAction("Index");

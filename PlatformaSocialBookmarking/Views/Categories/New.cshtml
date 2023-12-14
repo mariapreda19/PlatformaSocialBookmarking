@@ -4,22 +4,23 @@
     ViewBag.Title = "Adaugare Categorie";
 }
 
-
 <h2>Adaugare Categorie</h2>
 
 @using (Html.BeginForm(actionName: "New", controllerName: "Categories", method: FormMethod.Post))
 {
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryName, "Denumire categorie")
+        @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
+    </div>
 
-    @Html.Label("CategoryName", "Denumire categorie")
-    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.CoverUrl, "URL Imagine")
+        @Html.TextBoxFor(m => m.CoverUrl, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CoverUrl, null, new { @class = "text-danger" })
+    </div>
 
-    @Html.TextBox("CategoryName", null, new { @class = "form-control" })
-
-    @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
-    <br />
-    <br />
-
-    <button class="btn btn-success" type="submit">Adauga categorie</button>
-
+    <div class="form-group">
+        <button class="btn btn-success" type="submit">Adauga categorie</button>
+    </div>
 }
-
