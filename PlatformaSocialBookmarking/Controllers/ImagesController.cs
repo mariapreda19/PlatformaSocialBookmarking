@@ -10,10 +10,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace PlatformaSocialBookmarking.Controllers
 {
+
     [Authorize]
     public class ImagesController : Controller
-    {
-       /* 
+    {  
         private readonly ApplicationDbContext db;
 
         private readonly UserManager<ApplicationUser> _userManager;
@@ -31,23 +31,6 @@ namespace PlatformaSocialBookmarking.Controllers
 
         }
 
-        [Authorize(Roles = "UserNeinregistrat,UserInregistrat,Admin")]
-
-        public IActionResult Index()
-        {
-
-            var images = db.Images.Include("Category").Include("User");
-
-            ViewBag.Images = images;
-
-            if(TempData.ContainsKey("message"))
-            {
-                ViewBag.Message = TempData["message"];
-                ViewBag.Alert = TempData["messageType"];
-            }
-
-            return View();
-        }
 
 
         [Authorize(Roles = "UserNeinregistrat,UserInregistrat,Admin")]
@@ -69,8 +52,6 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             Image image = new Image();
 
-            image.Categ = GetAllCategories();
-
             return View(image);
         }
 
@@ -80,9 +61,8 @@ namespace PlatformaSocialBookmarking.Controllers
 
         public IActionResult New(Image image)
         {
-            image.Date = DateTime.Now;
 
-            image.UserId = _userManager.GetUserId(User);
+            image.Bookmark.UserId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
             {
@@ -94,22 +74,21 @@ namespace PlatformaSocialBookmarking.Controllers
             }
             else
             {
-                image.Categ = GetAllCategories();
                 return View(image);
             }
         }
 
         //editarea unei postari
         [Authorize(Roles = "UserInregistrat,Admin")]
-
         public IActionResult Edit(int id)
         {
-            Image image = db.Images.Include("Category")
-                                   .Where (img => img.Id == id)
-                                   .First();
-            image.Categ = GetAllCategories();
+            Image image = db.Images
+                            .Include(img => img.Bookmark)  
+                            .ThenInclude(b => b.User)    
+                            .Where(img => img.Id == id)
+                            .First();
 
-            if(image.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            if (image.Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 return View(image);
             }
@@ -124,15 +103,12 @@ namespace PlatformaSocialBookmarking.Controllers
         public IActionResult Edit(int id, Image requestImage)
         {
             Image image = db.Images.Find(id);
-            requestImage.Categ = GetAllCategories();
 
             if(ModelState.IsValid)
             {
-                if (image.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                if (image.Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
                 {
-                    image.Description = requestImage.Description;
                     image.Url = requestImage.Url;
-                    image.CategoryId = requestImage.CategoryId;
                     TempData["message"] = "Postarea a fost modificata";
                     TempData["messageType"] = "alert-success";
                     db.SaveChanges();
@@ -147,7 +123,6 @@ namespace PlatformaSocialBookmarking.Controllers
             }
             else
             {
-                requestImage.Categ = GetAllCategories();
                 return View(requestImage);
             }
         }
@@ -159,7 +134,7 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             Image image = db.Images.Find(id);
 
-            if (image.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            if (image.Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 db.Images.Remove(image);
                 db.SaveChanges();
@@ -190,32 +165,8 @@ namespace PlatformaSocialBookmarking.Controllers
             ViewBag.UserCurent = _userManager.GetUserId(User);
         }
 
-        [NonAction]
 
-        public IEnumerable<SelectListItem> GetAllCategories()
-        {
-            var selectList = new List<SelectListItem>();
-
-            var categories = from cat in db.Categories
-                             select cat;
-
-            foreach (var category in categories)
-            {
-                selectList.Add(new SelectListItem
-                {
-                    Value = category.Id.ToString(),
-                    Text = category.CategoryName.ToString()
-                });
-            }
-
-            return selectList;
-        }
-
-        public IActionResult IndexPartialView()
-        {
-            return View();
-        }
-       */
+      
         
     }
 }
