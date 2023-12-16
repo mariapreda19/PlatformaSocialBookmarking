@@ -19,5 +19,8 @@ namespace PlatformaSocialBookmarking.Data
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+
     }
 }

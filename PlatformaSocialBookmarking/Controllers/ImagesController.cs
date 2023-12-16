@@ -13,7 +13,7 @@ namespace PlatformaSocialBookmarking.Controllers
     [Authorize]
     public class ImagesController : Controller
     {
-        
+       /* 
         private readonly ApplicationDbContext db;
 
         private readonly UserManager<ApplicationUser> _userManager;
@@ -215,6 +215,7 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             return View();
         }
+       */
         
     }
 }

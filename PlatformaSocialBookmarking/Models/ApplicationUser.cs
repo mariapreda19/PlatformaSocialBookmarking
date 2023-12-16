@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PlatformaSocialBookmarking.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 
 namespace PlatformaSocialBookmarking.Models
@@ -11,6 +13,13 @@ namespace PlatformaSocialBookmarking.Models
         public virtual ICollection<Image>? Images { get; set; }
 
         public virtual ICollection<Bookmark>? Bookmarks { get; set; }
+
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set;}
+
+        [NotMapped]
+        public IEnumerable<SelectListItem>? AllRoles { get; set; }
 
     }
 }

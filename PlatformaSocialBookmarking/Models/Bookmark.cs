@@ -9,19 +9,19 @@ namespace PlatformaSocialBookmarking.Models
         [Key]
         public int Id { get; set; }
 
+        public string Title { get; set; }
+        
+        public string Description { get; set; }
+
         public virtual Comment? Comment { get; set; }
 
-        public int? Votes { get; set; }
-
-
-        public int? CategoryId { get; set; }
+        public int? UserId { get; set; }
 
         public virtual ApplicationUser? User { get; set; }
 
-        public virtual Category? Category { get; set; }
-
         [NotMapped]
-
         public IEnumerable<SelectListItem>? Categ { get; set; }
+
+        public virtual ICollection<Bookmark_has_Category>? Bookmark_Has_Category { get; set; }
     }
 }

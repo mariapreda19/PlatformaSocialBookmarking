@@ -10,31 +10,11 @@ namespace PlatformaSocialBookmarking.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Title required")]
-        [StringLength(100, ErrorMessage = "max 100")]
-        [MinLength(3, ErrorMessage = "Min 3")]
-
-        public string Description { get; set; }
-
-        [Required(ErrorMessage = "Pune poza")]
-
         public string Url { get; set; }
 
-        [Required(ErrorMessage = "Vrem sa stim cand faci ce faci")]
-        public DateTime Date { get; set; }
+        public int? BookmarkId { get; set; }
 
-        [Required(ErrorMessage = "Categoria este obligatorie")]
-        public int? CategoryId { get; set; }
-
-        public string? UserId { get; set; }
-
-        public virtual ApplicationUser? User { get; set; }
-
-        public virtual Category? Category { get; set; }
-
-        [NotMapped]
-
-        public IEnumerable<SelectListItem>? Categ { get; set; }
+        public virtual Bookmark? Bookmark { get; set; }
 
     }
 }
