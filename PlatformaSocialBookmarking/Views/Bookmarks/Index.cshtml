@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
 }
+
+<br />
+
+<a class="btn btn-success rounded-pill mb-5" href="/Bookmarks/New">
+    <i class="bi bi-plus"></i> Adaugare bookmark
+</a>
+
+<div class="row">
+    @foreach (var bookmark in ViewBag.Bookmarks)
+    {
+        <div class="col-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" name="Name">@bookmark.Title</h5>
+
+                    @if (ViewBag.EsteAdmin)
+                    {
+                        <div><i class="bi bi-person"> Creat de: </i> @bookmark.User.UserName</div>
+                    }
+
+                    
+                    <div class="mb-3">
+                        @if (bookmark.Images != null && bookmark.Images.Any())
+                        {
+                            foreach (var image in bookmark.Images)
+                            {
+                                <img src="@image.Url" alt="Image" class="img-fluid mb-2" />
+                            }
+                        }
+                    </div>
+
+                    <p class="card-text">@bookmark.Description</p>
+                    <a class="btn alert-success" href="/Bookmarks/Show/@bookmark.Id">Afisare Colectie</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

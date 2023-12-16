@@ -14,6 +14,7 @@ namespace PlatformaSocialBookmarking.Models
 
         public int? BookmarkId { get; set; }
 
+        [ForeignKey("BookmarkId")]
         public virtual Bookmark? Bookmark { get; set; }
 
     }

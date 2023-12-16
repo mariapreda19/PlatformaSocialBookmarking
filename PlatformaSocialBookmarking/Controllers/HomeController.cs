@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using PlatformaSocialBookmarking.Models;
 using PlatformaSocialBookmarking.Data;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace PlatformaSocialBookmarking.Controllers
 {
