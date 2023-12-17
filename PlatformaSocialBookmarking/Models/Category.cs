@@ -21,7 +21,7 @@ namespace PlatformaSocialBookmarking.Models
 
         [NotMapped]
 
-        public virtual ICollection<Bookmark_has_Category>? Bookmark_Has_Category { get; set; }
+        public virtual ICollection<Bookmark_Has_Category>? Bookmark_Has_Categories { get; set; }
 
     }
 }

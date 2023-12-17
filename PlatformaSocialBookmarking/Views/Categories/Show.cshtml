@@ -1,25 +1,36 @@
 ﻿@model PlatformaSocialBookmarking.Models.Category
+
 @{
-    ViewBag.Title = "Afisare categorie";
+    ViewData["Title"] = "Category Details";
 }
 
+<h2>@ViewData["Title"]</h2>
 
-<h2>@ViewBag.Title</h2>
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["message"]
+    </div>
+}
 
-<br />
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
 
-<p>@Model.CategoryName</p>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoverUrl)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoverUrl)
+        </dd>
+    </dl>
+</div>
 
-
-<form method="post" action="/Categories/Delete/@Model.Id">
-
-    <button class="btn btn-danger" type="submit">Sterge categoria</button>
-
-</form>
-<br />
-<a class="btn alert-success" href="/Categories/Index/">Afisare lista categorii</a>
-
-<br />
-<hr />
-<br />
-
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

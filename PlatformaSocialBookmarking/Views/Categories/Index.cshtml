@@ -1,31 +1,42 @@
-﻿@{
-    ViewBag.Title = "Lista categorii";
+﻿@model IEnumerable<PlatformaSocialBookmarking.Models.Category>
+
+@{
+    ViewData["Title"] = "Categories";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewData["Title"]</h2>
 
-<br />
-
-@if (TempData.ContainsKey("message"))
+@if (TempData["message"] != null)
 {
-    <h1>@ViewBag.message</h1>
+    <div class="alert alert-info">
+        @TempData["message"]
+    </div>
 }
 
-<a href="/Images/Index">Inapoi la imagini</a>
-<br />
-<br />
+<a asp-action="New" class="btn btn-success">Add New Category</a>
 
-@foreach (var category in ViewBag.Categories)
-{
-    @Html.Label("CategoryName", "Denumire categorie")
-    <p>@category.CategoryName</p>
-    <a class="btn alert-success" href="/Categories/Show/@category.Id">Afisare categorie</a>
-    <a class="btn alert-success" href="/Categories/Edit/@category.Id">Editare categorie</a>
-    <br />
-    <hr />
-    <br />
-}
-<br />
-<a class="btn btn-success" href="/Categories/New">Adauga o noua categorie</a>
-<br />
-
+<table class="table table-bordered mt-4">
+    <thead>
+        <tr>
+            <th>Category Name</th>
+            <th>Cover URL</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.CategoryName</td>
+                <td>@category.CoverUrl</td>
+                <td>
+                    <a asp-action="Show" asp-route-id="@category.Id" class="btn btn-info">Show</a>
+                    <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@category.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

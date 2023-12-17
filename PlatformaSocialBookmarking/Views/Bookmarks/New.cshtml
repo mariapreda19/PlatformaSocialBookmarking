@@ -1,35 +1,51 @@
 ﻿@model PlatformaSocialBookmarking.Models.Bookmark
 
-<br />
-
-<h2 class="mb-5 text-center">Adaugare Bookmark</h2>
-
-<br />
-
-
-@using (Html.BeginForm(actionName: "New", controllerName: "Bookmarks", method: FormMethod.Post))
-{
-
-    @Html.Label("Title", "Denumire colectie")
-    <br />
-
-    @Html.TextBox("Title", null, new { @class = "form-control" })
-
-    @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
-    <br />
-    <br />
-
-    @Html.Label("Description", "Descriere")
-    <br />
-
-    @Html.TextBox("Description", null, new { @class = "form-control" })
-
-    @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
-    <br />
-    <br />
-
-
-
-    <button class="btn btn-success" type="submit">Adauga bookmark</button>
-
+@{
+    ViewData["Title"] = "New Bookmark";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["message"]
+    </div>
+}
+
+<form asp-action="New" method="post">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">Title</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Select Images</label>
+        <br />
+        @foreach (var image in ViewBag.UserImages)
+        {
+            <div>
+                <input type="checkbox" name="selectedImages" value="@image.Id" />
+
+                <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
+
+            </div>
+            <br />
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Select Category</label>
+        <br />
+        @Html.DropDownList("selectedCategory", ViewBag.UserCategories as SelectList, "Select Category", new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Bookmark</button>
+</form>

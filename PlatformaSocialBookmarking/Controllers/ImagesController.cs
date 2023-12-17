@@ -31,9 +31,26 @@ namespace PlatformaSocialBookmarking.Controllers
 
         }
 
+        [Authorize(Roles = "Editor, Admin")]
+        public IActionResult Index()
+        {
+            var userId = _userManager.GetUserId(User);
+            var images = db.Images.Include("User").Where(i => i.UserId == userId).ToList();
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
+            return View(images);
+        }
 
 
-        [Authorize(Roles = "UserNeinregistrat,UserInregistrat,Admin")]
+
+
+
+        [Authorize(Roles = "User,Editor,Admin")]
 
         public IActionResult Show(int id)
         {
@@ -47,7 +64,7 @@ namespace PlatformaSocialBookmarking.Controllers
             return View(image);
         }
 
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult New()
         {
             Image image = new Image();
@@ -56,13 +73,13 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         //adaugarea postarii in baza de date
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         [HttpPost]
 
         public IActionResult New(Image image)
         {
 
-            image.Bookmark.UserId = _userManager.GetUserId(User);
+            image.UserId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
             {
@@ -79,16 +96,15 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         //editarea unei postari
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Edit(int id)
         {
             Image image = db.Images
-                            .Include(img => img.Bookmark)  
-                            .ThenInclude(b => b.User)    
+                            .Include(b => b.User)    
                             .Where(img => img.Id == id)
                             .First();
 
-            if (image.Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            if (image.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 return View(image);
             }
@@ -97,7 +113,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         //readaugare in baza de date dupa modificare
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         [HttpPost]
 
         public IActionResult Edit(int id, Image requestImage)
@@ -106,7 +122,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
             if(ModelState.IsValid)
             {
-                if (image.Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                if (image.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
                 {
                     image.Url = requestImage.Url;
                     TempData["message"] = "Postarea a fost modificata";
@@ -129,12 +145,12 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Delete(int id)
         {
             Image image = db.Images.Find(id);
 
-            if (image.Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            if (image.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 db.Images.Remove(image);
                 db.SaveChanges();

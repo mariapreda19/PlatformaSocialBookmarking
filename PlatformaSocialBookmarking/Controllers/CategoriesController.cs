@@ -17,7 +17,7 @@ namespace PlatformaSocialBookmarking.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "UserNeinregistrat, UserInregistrat, Admin")]
+        [Authorize(Roles = "User, Editor, Admin")]
         public ActionResult Index()
         {
             if (TempData.ContainsKey("message"))
@@ -25,10 +25,11 @@ namespace PlatformaSocialBookmarking.Controllers
                 ViewBag.Message = TempData["message"].ToString();
             }
 
-            var categories = _db.Categories.OrderBy(category => category.CategoryName);
+            var categories = _db.Categories.OrderBy(category => category.CategoryName).ToList();
             ViewBag.Categories = categories;
-            return View();
+            return View(categories);
         }
+
 
         public ActionResult Show(int id, string userId)
         {
@@ -36,7 +37,13 @@ namespace PlatformaSocialBookmarking.Controllers
             return View(category);
         }
 
-        [Authorize(Roles = "UserInregistrat, Admin")]
+        [Authorize(Roles = "Editor, Admin")]
+        public ActionResult New()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Editor, Admin")]
         [HttpPost]
         public ActionResult New(Category cat)
         {
@@ -54,7 +61,8 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "UserInregistrat, Admin")]
+
+        [Authorize(Roles = "Editor, Admin")]
         public ActionResult Edit(int id)
         {
             Category category = _db.Categories.Find(id);
@@ -70,7 +78,7 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "UserInregistrat, Admin")]
+        [Authorize(Roles = "Editor, Admin")]
         [HttpPost]
         public ActionResult Edit(int id, Category requestCategory)
         {
@@ -98,7 +106,7 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "UserInregistrat, Admin")]
+        [Authorize(Roles = "Editor, Admin")]
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -126,6 +134,8 @@ namespace PlatformaSocialBookmarking.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+
     }
 
 }

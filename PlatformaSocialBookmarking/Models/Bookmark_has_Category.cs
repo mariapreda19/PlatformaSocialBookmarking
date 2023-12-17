@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatformaSocialBookmarking.Models
 {
-    public class Bookmark_has_Category
+    public class Bookmark_Has_Category
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

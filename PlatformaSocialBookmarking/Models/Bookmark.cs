@@ -21,12 +21,11 @@ namespace PlatformaSocialBookmarking.Models
 
         public virtual ApplicationUser? User { get; set; }
 
-
         [NotMapped]
         public IEnumerable<SelectListItem>? Categ { get; set; }
 
-        public virtual ICollection<Image>? Images { get; set; }
+        public virtual ICollection<Bookmark_Has_Category>? Bookmark_Has_Categories { get; set; }
 
-        public virtual ICollection<Bookmark_has_Category>? Bookmark_Has_Category { get; set; }
+        public virtual ICollection<Bookmark_Has_Image>? Bookmark_Has_Images { get; set; }
     }
 }

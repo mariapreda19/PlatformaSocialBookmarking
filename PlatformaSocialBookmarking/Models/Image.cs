@@ -12,10 +12,13 @@ namespace PlatformaSocialBookmarking.Models
 
         public string Url { get; set; }
 
-        public int? BookmarkId { get; set; }
+        public string? UserId { get; set; }
 
-        [ForeignKey("BookmarkId")]
-        public virtual Bookmark? Bookmark { get; set; }
+        [ForeignKey("UserId")]
 
+        public virtual ApplicationUser? User { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Bookmark_Has_Image>? Bookmark_Has_Images { get; set; }
     }
 }

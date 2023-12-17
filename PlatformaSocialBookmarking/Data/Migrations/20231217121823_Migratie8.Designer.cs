@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlatformaSocialBookmarking.Data;
 
@@ -11,9 +12,11 @@ using PlatformaSocialBookmarking.Data;
 namespace PlatformaSocialBookmarking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231217121823_Migratie8")]
+    partial class Migratie8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,7 +282,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Bookmark_Has_Categories");
+                    b.ToTable("Bookmark_Has_Category");
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Image", b =>
@@ -302,7 +305,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Bookmark_Has_Images");
+                    b.ToTable("Bookmark_Has_Image");
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Category", b =>

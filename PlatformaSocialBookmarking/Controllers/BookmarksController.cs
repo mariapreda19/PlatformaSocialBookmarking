@@ -37,26 +37,29 @@ namespace PlatformaSocialBookmarking.Controllers
             _roleManager = roleManager;
         }
 
-        [Authorize(Roles = "UserNeinregistrat, UserInregistrat, Admin")]
+        [Authorize(Roles = "User, Editor, Admin")]
         public IActionResult Index()
         {
-            var bookmarks = db.Bookmarks.Include("Category")
-                                        .Include("User")
-                                        .Include("Image")
-                                        .OrderBy(b => b.Date);
+            var bookmarks = db.Bookmarks.Include(b => b.Bookmark_Has_Categories)
+                                        .Include(b => b.User)
+                                        .Include(b => b.Bookmark_Has_Images)
+                                            .ThenInclude(bhi => bhi.Image)
+                                        .OrderBy(b => b.Date)
+                                        .ToList();
 
             ViewBag.Bookmarks = bookmarks;
-            
 
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
                 ViewBag.Alert = TempData["messageType"];
             }
+
             return View();
         }
 
-        [Authorize(Roles = "UserNeinregistrat, UserInregistrat, Admin")]
+
+        [Authorize(Roles = "User, Editor, Admin")]
         public IActionResult Show(int id)
         {
             Bookmark bookmark = db.Bookmarks.Include("Category")
@@ -77,7 +80,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "UserNeinregistrat, UserInregistrat, Admin")]
+        [Authorize(Roles = "User, Editor, Admin")]
 
         public IActionResult Show([FromForm] Comment comment)
         {
@@ -111,43 +114,90 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "UserInregistrat, Admin")]
+
+        [Authorize(Roles = "Editor, Admin")]
         public IActionResult New()
         {
             Bookmark bookmark = new Bookmark();
 
-            bookmark.Categ = GetAllCategories();
+            var userId = _userManager.GetUserId(User);
+            var userImages = db.Images.Where(img => img.UserId == userId).ToList();
+
+            var userCategories = db.Categories.Where(cat => cat.UserId == userId).ToList();
+
+            ViewBag.UserImages = userImages;
+            ViewBag.UserCategories = new SelectList(userCategories, "Id", "CategoryName");
 
             return View(bookmark);
         }
 
 
-        [Authorize(Roles = "UserInregistrat, Admin")]
+
+
+        [Authorize(Roles = "Editor, Admin")]
         [HttpPost]
-        public IActionResult New(Bookmark bookmark)
+        public IActionResult New(Bookmark bookmark, string[] selectedImages, int selectedCategory)
         {
             bookmark.Date = DateTime.Now;
-
             bookmark.UserId = _userManager.GetUserId(User);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Bookmarks.Add(bookmark);
                 db.SaveChanges();
+
+                if (selectedImages != null)
+                {
+                    foreach (var imageId in selectedImages)
+                    {
+                        var bookmarkHasImage = new Bookmark_Has_Image
+                        {
+                            BookmarkId = bookmark.Id,
+                            ImageId = int.Parse(imageId)
+                        };
+
+                        db.Bookmark_Has_Images.Add(bookmarkHasImage);
+                    }
+
+                    db.SaveChanges();
+                }
+
+                var bookmarkHasCategory = new Bookmark_Has_Category
+                {
+                    BookmarkId = bookmark.Id,
+                    CategoryId = selectedCategory
+                };
+
+                db.Bookmark_Has_Categories.Add(bookmarkHasCategory);
+                db.SaveChanges();
+
                 TempData["message"] = "Bookmarkul a fost adaugat";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
             else
             {
-                bookmark.Categ = GetAllCategories();
+                var userId = _userManager.GetUserId(User);
+                var userImages = db.Images.Where(img => img.UserId == userId).ToList();
+                var userCategories = db.Categories.Where(cat => cat.UserId == userId).ToList();
+                ViewBag.UserImages = userImages;
+                ViewBag.UserCategories = new SelectList(userCategories, "Id", "CategoryName");
+
                 return View(bookmark);
             }
         }
 
 
 
-        [Authorize(Roles = "UserInregistrat,Admin")]
+
+
+
+
+
+
+
+
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Edit(int id)
         {
 
@@ -173,7 +223,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Edit(int id, Bookmark requestBookmark)
         {
             Bookmark bookmark = db.Bookmarks.Find(id);
@@ -208,7 +258,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "UserInregistrat,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public ActionResult Delete(int id)
         {
             Bookmark Bookmark = db.Bookmarks.Include("Comments")
