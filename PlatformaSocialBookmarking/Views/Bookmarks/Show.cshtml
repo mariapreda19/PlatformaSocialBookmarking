@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PlatformaSocialBookmarking.Models.Bookmark
+
 @{
+    ViewData["Title"] = "Bookmark Details";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.Title</h3>
+        <p>Created by: @Model.User?.UserName</p>
+    </div>
+    <div class="card-body">
+        <p>@Model.Description</p>
+
+        <!-- Display all images -->
+        @if (Model.Bookmark_Has_Images != null && Model.Bookmark_Has_Images.Any())
+        {
+            <h5>Images:</h5>
+            <div class="image-container">
+                @foreach (var bookmarkHasImage in Model.Bookmark_Has_Images)
+                {
+                    <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
+                }
+            </div>
+        }
+
+        @if (Model.Bookmark_Has_Categories != null && Model.Bookmark_Has_Categories.Any())
+        {
+            <p>Category: @Model.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
+        }
+    </div>
+
+    <div>
+        <a asp-controller="Bookmarks" asp-action="Index"  class="btn btn-primary">Back to Bookmarks</a>
+    </div>
+</div>

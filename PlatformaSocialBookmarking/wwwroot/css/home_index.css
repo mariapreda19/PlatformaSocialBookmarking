@@ -1,6 +1,6 @@
 ﻿.image-container {
     position: relative;
-    overflow: hidden; /* Ensure the overlay doesn't overflow */
+    overflow: hidden;
 }
 
 .image-overlay {
@@ -9,13 +9,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value to control transparency */
-    z-index: 1; /* Set z-index to 1 */
-    transition: background-color 0.3s; /* Smooth transition effect */
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+    transition: background-color 0.3s;
 }
 
 .card:hover .image-overlay {
-    background-color: rgba(255, 255, 255, 0); /* Hover effect: make overlay transparent */
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .card-body {
@@ -24,42 +24,39 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    z-index: 2; /* Set z-index to 2, a value higher than the overlay */
-    color: black; /* Dark grey text color */
-    font-size: 2em; /* Adjust the font size as needed */
-    font-weight: bold; /* Make the text bold */
-    transition: opacity 0.3s; /* Smooth transition effect for opacity */
+    z-index: 2;
+    color: black; 
+    font-size: 2em; 
+    font-weight: bold; 
+    transition: opacity 0.3s; 
 }
 
 .card:hover .card-body {
-    opacity: 0; /* Hover effect: make text disappear */
+    opacity: 0; 
 }
 
 .card-title {
-    margin-bottom: 0; /* Remove default margin for cleaner appearance */
+    margin-bottom: 0;
 }
 
 .card-link {
-    color: inherit; /* Use the default text color */
-    text-decoration: none; /* Remove underline */
+    color: inherit; 
+    text-decoration: none; 
 }
 
     .card-link:hover {
-        text-decoration: underline; /* Hover effect: underline when hovered */
+        text-decoration: underline;
     }
 
-/* Styles for error messages */
-/* Styles for error messages */
 .alert {
     background-color: rgba(255, 255, 255, 0);
-    border: none; /* Remove the border */
+    border: none; 
     color: grey;
     text-align: center;
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-/* Styles for the "Add New" section */
 .add-new-section {
     text-align: center;
     margin-top: 2px;
@@ -67,12 +64,12 @@
 
 .add-new-text {
     color: lightgrey;
-    font-size: 1em; /* Adjust the font size for the lighter grey text */
+    font-size: 1em; 
     margin-top: 10px;
 }
 
 #missing_content {
     color: grey;
-    font-size: 2em; /* Adjust the font size for the lighter grey text */
+    font-size: 2em;
     margin-top: 10px;
 }

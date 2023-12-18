@@ -21,20 +21,21 @@
             <p>Created by: @bookmark.User?.UserName</p>
         </div>
         <div class="card-body">
-            <p>@bookmark.Description</p>
-            @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any())
-            {
-                <p>Category: @bookmark.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
-            }
+
             @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
             {
                 <h5>Images:</h5>
                 <div class="image-container">
-                    @foreach (var bookmarkHasImage in bookmark.Bookmark_Has_Images)
-                    {
-                        <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
-                    }
+                    <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />
                 </div>
+
+                <a asp-controller="Bookmarks" asp-action="Show" asp-route-id="@bookmark.Id" class="btn btn-primary">Show Bookmark</a>
+
+            }
+
+            @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any())
+            {
+                <p>Category: @bookmark.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
             }
         </div>
     </div>
