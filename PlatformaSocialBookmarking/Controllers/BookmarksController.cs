@@ -55,7 +55,7 @@ namespace PlatformaSocialBookmarking.Controllers
                 ViewBag.Alert = TempData["messageType"];
             }
 
-            return View();
+            return View(bookmarks);
         }
 
 
