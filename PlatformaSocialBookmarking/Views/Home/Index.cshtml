@@ -4,57 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-    .image-container {
-        position: relative;
-        overflow: hidden; /* Ensure the overlay doesn't overflow */
-    }
-
-    .image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value to control transparency */
-        z-index: 1; /* Set z-index to 1 */
-        transition: background-color 0.3s; /* Smooth transition effect */
-    }
-
-    .card:hover .image-overlay {
-        background-color: rgba(255, 255, 255, 0); /* Hover effect: make overlay transparent */
-    }
-
-    .card-body {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        z-index: 2; /* Set z-index to 2, a value higher than the overlay */
-        color: black; /* Dark grey text color */
-        font-size: 2em; /* Adjust the font size as needed */
-        font-weight: bold; /* Make the text bold */
-        transition: opacity 0.3s; /* Smooth transition effect for opacity */
-    }
-
-    .card:hover .card-body {
-        opacity: 0; /* Hover effect: make text disappear */
-    }
-
-    .card-title {
-        margin-bottom: 0; /* Remove default margin for cleaner appearance */
-    }
-
-    .card-link {
-        color: inherit; /* Use the default text color */
-        text-decoration: none; /* Remove underline */
-    }
-
-        .card-link:hover {
-            text-decoration: underline; /* Hover effect: underline when hovered */
-        }
-</style>
+<link rel="stylesheet" href="~/css/home_index.css">
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
@@ -62,21 +12,74 @@
 </div>
 
 <div class="container mt-4">
-    <div class="row">
-        @foreach (var category in Model.Take(3))
-        {
-            <div class="col-md-4 mb-4">
-                <a href="@Url.Action("Show", "Categories", new { id = category.Id })" class="card card-link image-container">
-                    <div class="image-overlay"></div>
-                    <div style="position: relative; overflow: hidden; height: 0; padding-bottom: 33.33%;">
-                        <img src="@category.CoverUrl" class="card-img-top" alt="Category Cover" style="position: absolute; width: 100%; height: 100%; object-fit: cover;">
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert alert-warning">
+            <div id="missing_content">No categories available.</div>
+            <a asp-controller="Categories" asp-action="New">Go to New Category</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var category in Model.Take(3))
+            {
+                <div class="col-md-4 mb-4">
+                    <a href="@Url.Action("Show", "Categories", new { id = category.Id })" class="card card-link image-container">
+                        <div class="image-overlay"></div>
+                        <div style="position: relative; overflow: hidden; height: 0; padding-bottom: 33.33%;">
+                            <img src="@category.CoverUrl" class="card-img-top" alt="Category Cover" style="position: absolute; width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@category.CategoryName</h5>
+                            <!-- You can add more information about the category here if needed -->
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+    @if (ViewBag.Bookmarks != null && ViewBag.Bookmarks.Count > 0)
+    {
+        <div class="row">
+            @foreach (var bookmark in ViewBag.Bookmarks)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>@bookmark.Title</h3>
+                            <p>Created by: @bookmark.User?.UserName</p>
+                        </div>
+                        <div class="card-body">
+                            <p>@bookmark.Description</p>
+                            @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any())
+                            {
+                                <p>Category: @bookmark.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
+                            }
+                            @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
+                            {
+                                <h5>Images:</h5>
+                                <div class="image-container">
+                                    @foreach (var bookmarkHasImage in bookmark.Bookmark_Has_Images)
+                                    {
+                                        <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
+                                    }
+                                </div>
+                            }
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">@category.CategoryName</h5>
-                        <!-- You can add more information about the category here if needed -->
-                    </div>
-                </a>
-            </div>
-        }
-    </div>
+                    <br />
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <div id="missing_content">No bookmarks available.</div>
+            <a asp-controller="Bookmarks" asp-action="New">Go to New Bookmark</a>
+        </div>
+    }
+
 </div>

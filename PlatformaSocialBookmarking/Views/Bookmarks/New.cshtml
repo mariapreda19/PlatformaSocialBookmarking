@@ -29,16 +29,27 @@
     <div class="form-group">
         <label>Select Images</label>
         <br />
-        @foreach (var image in ViewBag.UserImages)
+        @if(ViewBag.UserImages != null && ViewBag.UserImages.Count > 0)
         {
-            <div>
-                <input type="checkbox" name="selectedImages" value="@image.Id" />
+            @foreach (var image in ViewBag.UserImages)
+            {
+                <div>
+                    <input type="checkbox" name="selectedImages" value="@image.Id" />
 
-                <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
+                    <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
 
-            </div>
-            <br />
+                </div>
+                <br />
+            }
         }
+        else
+{
+            <div class="alert alert-warning">
+                <div id="missing_content">No images available.</div>
+                <a asp-controller="Images" asp-action="New">Go to New Image</a>
+            </div>
+        }
+
     </div>
 
     <div class="form-group">

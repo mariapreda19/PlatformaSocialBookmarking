@@ -1,0 +1,78 @@
+﻿.image-container {
+    position: relative;
+    overflow: hidden; /* Ensure the overlay doesn't overflow */
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value to control transparency */
+    z-index: 1; /* Set z-index to 1 */
+    transition: background-color 0.3s; /* Smooth transition effect */
+}
+
+.card:hover .image-overlay {
+    background-color: rgba(255, 255, 255, 0); /* Hover effect: make overlay transparent */
+}
+
+.card-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2; /* Set z-index to 2, a value higher than the overlay */
+    color: black; /* Dark grey text color */
+    font-size: 2em; /* Adjust the font size as needed */
+    font-weight: bold; /* Make the text bold */
+    transition: opacity 0.3s; /* Smooth transition effect for opacity */
+}
+
+.card:hover .card-body {
+    opacity: 0; /* Hover effect: make text disappear */
+}
+
+.card-title {
+    margin-bottom: 0; /* Remove default margin for cleaner appearance */
+}
+
+.card-link {
+    color: inherit; /* Use the default text color */
+    text-decoration: none; /* Remove underline */
+}
+
+    .card-link:hover {
+        text-decoration: underline; /* Hover effect: underline when hovered */
+    }
+
+/* Styles for error messages */
+/* Styles for error messages */
+.alert {
+    background-color: rgba(255, 255, 255, 0);
+    border: none; /* Remove the border */
+    color: grey;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Styles for the "Add New" section */
+.add-new-section {
+    text-align: center;
+    margin-top: 2px;
+}
+
+.add-new-text {
+    color: lightgrey;
+    font-size: 1em; /* Adjust the font size for the lighter grey text */
+    margin-top: 10px;
+}
+
+#missing_content {
+    color: grey;
+    font-size: 2em; /* Adjust the font size for the lighter grey text */
+    margin-top: 10px;
+}

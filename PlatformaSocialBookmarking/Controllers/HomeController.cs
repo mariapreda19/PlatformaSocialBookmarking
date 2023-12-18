@@ -16,6 +16,28 @@ namespace PlatformaSocialBookmarking.Controllers
             _db = db;
         }
 
+      
+
+        [HttpPost]
+        public IActionResult AddCategory(string categoryName, string coverUrl)
+        {
+            return Redirect("/Category/New");
+
+        }
+
+        [HttpPost]
+        public IActionResult AddBookmark(string title, string description, int categoryId)
+        {
+            // Add logic to save the new bookmark to the database
+            // Replace the following line with your actual data access and storage logic
+            // bookmarkService.AddBookmark(title, description, categoryId);
+
+            // Redirect to the home page or the newly created bookmark page
+            return RedirectToAction("Index");
+        }
+       
+
+
         public IActionResult Index()
         {
             var categories = GetCategories();
