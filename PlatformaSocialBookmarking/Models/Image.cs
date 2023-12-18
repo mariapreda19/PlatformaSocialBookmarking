@@ -10,6 +10,8 @@ namespace PlatformaSocialBookmarking.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Your application had a stroke: cjkdgskcjs")]
+
         public string Url { get; set; }
 
         public string? UserId { get; set; }
