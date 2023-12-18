@@ -12,8 +12,8 @@ using PlatformaSocialBookmarking.Data;
 namespace PlatformaSocialBookmarking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231214111752_Migratie")]
-    partial class Migratie
+    [Migration("20231218123313_Migratie_care_merge_uneori")]
+    partial class Migratie_care_merge_uneori
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -181,6 +181,12 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -235,22 +241,71 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("Votes")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Bookmarks");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookmarkId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id", "BookmarkId", "CategoryId");
+
+                    b.HasIndex("BookmarkId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Bookmark_Has_Categories");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookmarkId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id", "BookmarkId", "ImageId");
+
+                    b.HasIndex("BookmarkId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("Bookmark_Has_Images");
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Category", b =>
@@ -265,7 +320,16 @@ namespace PlatformaSocialBookmarking.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CoverUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -310,18 +374,6 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -331,11 +383,32 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookmarkId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookmarkId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -391,15 +464,56 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark", b =>
                 {
-                    b.HasOne("PlatformaSocialBookmarking.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("PlatformaSocialBookmarking.Models.ApplicationUser", "User")
                         .WithMany("Bookmarks")
                         .HasForeignKey("UserId");
 
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Category", b =>
+                {
+                    b.HasOne("PlatformaSocialBookmarking.Models.Bookmark", "Bookmark")
+                        .WithMany("Bookmark_Has_Categories")
+                        .HasForeignKey("BookmarkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlatformaSocialBookmarking.Models.Category", "Category")
+                        .WithMany("Bookmark_Has_Categories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bookmark");
+
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Image", b =>
+                {
+                    b.HasOne("PlatformaSocialBookmarking.Models.Bookmark", "Bookmark")
+                        .WithMany("Bookmark_Has_Images")
+                        .HasForeignKey("BookmarkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlatformaSocialBookmarking.Models.Image", "Image")
+                        .WithMany("Bookmark_Has_Images")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bookmark");
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Category", b =>
+                {
+                    b.HasOne("PlatformaSocialBookmarking.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -421,17 +535,24 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Image", b =>
                 {
-                    b.HasOne("PlatformaSocialBookmarking.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PlatformaSocialBookmarking.Models.ApplicationUser", "User")
                         .WithMany("Images")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Category");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Vote", b =>
+                {
+                    b.HasOne("PlatformaSocialBookmarking.Models.Bookmark", "Bookmark")
+                        .WithMany()
+                        .HasForeignKey("BookmarkId");
+
+                    b.HasOne("PlatformaSocialBookmarking.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Bookmark");
 
                     b.Navigation("User");
                 });
@@ -447,7 +568,21 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark", b =>
                 {
+                    b.Navigation("Bookmark_Has_Categories");
+
+                    b.Navigation("Bookmark_Has_Images");
+
                     b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Category", b =>
+                {
+                    b.Navigation("Bookmark_Has_Categories");
+                });
+
+            modelBuilder.Entity("PlatformaSocialBookmarking.Models.Image", b =>
+                {
+                    b.Navigation("Bookmark_Has_Images");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,6 +23,16 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:Proiect2",
       "dynamicId": null
+    },
+    "mssql6": {
+      "type": "mssql",
+      "connectionId": "ProiectSocialBookmarking3",
+      "dynamicId": null
+    },
+    "mssql7": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ProiectSocialBookmarking5",
+      "dynamicId": null
     }
   }
 }
