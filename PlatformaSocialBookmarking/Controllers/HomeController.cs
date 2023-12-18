@@ -2,6 +2,9 @@
 using PlatformaSocialBookmarking.Models;
 using PlatformaSocialBookmarking.Data;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 namespace PlatformaSocialBookmarking.Controllers
 {
@@ -30,19 +33,25 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             return RedirectToAction("Index");
         }
-       
+
 
 
         public IActionResult Index()
         {
-            var categories = GetCategories();
-            return View(categories);
+            var bookmarks = GetBookmarks();
+            return View(bookmarks);
         }
 
-        private List<Category> GetCategories()
+
+        private List<Bookmark> GetBookmarks()
         {
-            var categories = _db.Categories.OrderBy(c => c.CategoryName).Take(3).ToList();
-            return categories;
+            var bookmarks = _db.Bookmarks.Include(b => b.Bookmark_Has_Categories)
+                                         .Include(b => b.Bookmark_Has_Images)
+                                            .ThenInclude(bhi => bhi.Image)
+                                         .OrderBy(b => b.Date)
+                                         .ToList();
+
+            return bookmarks;
         }
 
         public IActionResult Privacy()
