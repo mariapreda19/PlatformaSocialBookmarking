@@ -40,8 +40,10 @@ namespace PlatformaSocialBookmarking.Controllers
         [Authorize(Roles = "User, Editor, Admin")]
         public IActionResult Index()
         {
+            var userId = _userManager.GetUserId(User);
             var bookmarks = db.Bookmarks.Include(b => b.Bookmark_Has_Categories)
                                         .Include(b => b.User)
+                                        .Where(b => b.UserId == userId)
                                         .Include(b => b.Bookmark_Has_Images)
                                             .ThenInclude(bhi => bhi.Image)
                                         .OrderBy(b => b.Date)
@@ -59,15 +61,23 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
 
+
         [Authorize(Roles = "User, Editor, Admin")]
         public IActionResult Show(int id)
         {
-            Bookmark bookmark = db.Bookmarks.Include("Category")
-                                            .Include("User")
-                                            .Include("Image")
-                                            .Include("Comments.User")
-                                            .Where(b => b.Id == id)
-                                            .First();
+            Bookmark bookmark = db.Bookmarks
+                .Include(b => b.User)
+                .Include(b => b.Bookmark_Has_Categories)
+                    .ThenInclude(bhc => bhc.Category)
+                .Include(b => b.Bookmark_Has_Images)
+                    .ThenInclude(bhi => bhi.Image)
+                .FirstOrDefault(b => b.Id == id);
+
+            if (bookmark == null)
+            {
+                return NotFound();
+            }
+
             SetAccessRights();
 
             if (TempData.ContainsKey("message"))
@@ -79,38 +89,38 @@ namespace PlatformaSocialBookmarking.Controllers
             return View(bookmark);
         }
 
+
         [HttpPost]
         [Authorize(Roles = "User, Editor, Admin")]
-
-        public IActionResult Show([FromForm] Comment comment)
+        public async Task<IActionResult> Show([FromForm] Comment comment, int id)
         {
             comment.Date = DateTime.Now;
             comment.UserId = _userManager.GetUserId(User);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);
-                db.SaveChanges();
-                return Redirect("/Bookmarks/Show/" + comment.BookmarkId);
+                await db.SaveChangesAsync();
+                return RedirectToAction(nameof(Show), new { id = comment.BookmarkId });
             }
-
             else
             {
-                Bookmark bkm = db.Bookmarks.Include("Category")
-                                           .Include("User")
-                                           .Include("Image")
-                                           .Include("Comments")
-                                           .Include("Comments.User")
-                                           .Where(bkm => bkm.Id == comment.BookmarkId)
-                                           .First();
-                ViewBag.UserBookmarks = db.Categories
-                                         .Where(b => b.UserId == _userManager.GetUserId(User))
-                                         .ToList();
+                Bookmark bookmark = db.Bookmarks.Include(b => b.User)
+                                                .Include(b => b.Bookmark_Has_Categories)
+                                                    .ThenInclude(bhc => bhc.Category)
+                                                .Include(b => b.Bookmark_Has_Images)
+                                                    .ThenInclude(bhi => bhi.Image)
+                                                .First();
 
+
+                ViewBag.UserBookmarks = db.Categories
+                    .Where(b => b.UserId == _userManager.GetUserId(User))
+                    .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.CategoryName })
+                    .ToList();
 
                 SetAccessRights();
 
-                return View(bkm);
+                return View(bookmark);
             }
         }
 

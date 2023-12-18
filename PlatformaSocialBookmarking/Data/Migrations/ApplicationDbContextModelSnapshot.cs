@@ -256,7 +256,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookmarks");
+                    b.ToTable("Bookmarks", (string)null);
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Category", b =>
@@ -279,7 +279,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Bookmark_Has_Categories");
+                    b.ToTable("Bookmark_Has_Categories", (string)null);
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Bookmark_Has_Image", b =>
@@ -302,7 +302,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Bookmark_Has_Images");
+                    b.ToTable("Bookmark_Has_Images", (string)null);
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Category", b =>
@@ -328,7 +328,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Comment", b =>
@@ -360,7 +360,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Image", b =>
@@ -382,7 +382,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("PlatformaSocialBookmarking.Models.Vote", b =>
@@ -405,7 +405,7 @@ namespace PlatformaSocialBookmarking.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes");
+                    b.ToTable("Votes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
