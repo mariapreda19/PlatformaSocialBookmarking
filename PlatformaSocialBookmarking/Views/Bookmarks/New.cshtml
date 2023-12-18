@@ -4,59 +4,77 @@
     ViewData["Title"] = "New Bookmark";
 }
 
-<h2>@ViewData["Title"]</h2>
+<link rel="stylesheet" href="~/css/new_bookmark.css" />
 
-@if (TempData["message"] != null)
-{
-    <div class="alert alert-info">
-        @TempData["message"]
-    </div>
-}
+<div class="form-wrapper">
+    <h2>@ViewData["Title"]</h2>
 
-<form asp-action="New" method="post">
-    <div class="form-group">
-        <label asp-for="Title" class="control-label">Title</label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["message"]
+        </div>
+    }
 
-    <div class="form-group">
-        <label asp-for="Description" class="control-label">Description</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+    <form asp-action="New" method="post">
+        <div class="form-group">
+            <label asp-for="Title" class="control-label">Title</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label>Select Images</label>
-        <br />
-        @if(ViewBag.UserImages != null && ViewBag.UserImages.Count > 0)
-        {
-            @foreach (var image in ViewBag.UserImages)
+        <div class="form-group">
+            <label asp-for="Description" class="control-label">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Category</label>
+            @Html.DropDownList("selectedCategory", ViewBag.UserCategories as SelectList, "Select Category", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label class="selected-label">Select Images</label>
+            <br />
+            @if (ViewBag.UserImages != null && ViewBag.UserImages.Count > 0)
             {
-                <div>
-                    <input type="checkbox" name="selectedImages" value="@image.Id" />
+                @foreach (var image in ViewBag.UserImages)
+                {
+                    <div class=" images-wrapper">
+                        <div class="imageContainer">
+                            <input type="checkbox" name="selectedImages" value="@image.Id" style="display:none;" />
+                            <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
 
-                    <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
-
-                </div>
-                <br />
+                        <div class="overlay">
+                            <span class="bookmarkIcon">&#9733;</span>
+                        </div>
+                    </div>
+</div>
+                }
             }
-        }
-        else
-{
-            <div class="alert alert-warning">
-                <div id="missing_content">No images available.</div>
-                <a asp-controller="Images" asp-action="New">Go to New Image</a>
-            </div>
-        }
+            else
+            {
+                <div class="alert-warning">
+                    <div id="missing_content">No images available.</div>
+                    <a class= "app-link" , asp-controller="Images" asp-action="New">Go to New Image</a>
+                </div>
+            }
+        </div>
 
-    </div>
+        <button type="submit" class="btn-btn-primary">Create Bookmark</button>
+    </form>
+</div>
 
-    <div class="form-group">
-        <label>Select Category</label>
-        <br />
-        @Html.DropDownList("selectedCategory", ViewBag.UserCategories as SelectList, "Select Category", new { @class = "form-control" })
-    </div>
+<script>
+    const imageContainers = document.querySelectorAll('.imageContainer');
 
-    <button type="submit" class="btn btn-primary">Create Bookmark</button>
-</form>
+    // Add click event to toggle checkbox and bookmark state
+    imageContainers.forEach(imageContainer => {
+        imageContainer.addEventListener('click', () => {
+            const checkbox = imageContainer.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            imageContainer.classList.toggle('bookmarked');
+        });
+    });
+</script>
