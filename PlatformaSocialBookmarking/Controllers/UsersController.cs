@@ -171,5 +171,22 @@ namespace PlatformaSocialBookmarking.Controllers
             }
             return selectList;
         }
+
+        private static void AddToRole(ApplicationDbContext context, string userEmail, string roleName)
+        {
+            var user = context.Users.FirstOrDefault(u => u.Email == userEmail);
+            var role = context.Roles.FirstOrDefault(r => r.Name == roleName);
+
+            if (user != null && role != null)
+            {
+                context.UserRoles.Add(new IdentityUserRole<string>
+                {
+                    RoleId = role.Id,
+                    UserId = user.Id
+                });
+
+                context.SaveChanges();
+            }
+        }
     }
 }
