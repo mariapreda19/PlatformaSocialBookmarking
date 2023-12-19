@@ -12,6 +12,8 @@ using System.Text.RegularExpressions;
 using PlatformaSocialBookmarking.Controllers;
 using PlatformaSocialBookmarking.Data;
 using PlatformaSocialBookmarking.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using SQLitePCL;
 
 namespace PlatformaSocialBookmarking.Controllers
 {
@@ -150,6 +152,7 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             bookmark.Date = DateTime.Now;
             bookmark.UserId = _userManager.GetUserId(User);
+            bookmark.Votes = 0;
 
             if (ModelState.IsValid)
             {
@@ -330,7 +333,48 @@ namespace PlatformaSocialBookmarking.Controllers
             return selectList;
         }
 
+        [HttpPost]
+        public IActionResult Upvote(int bookmarkId)
+        {
+            ApplicationDbContext _context;
+            _context = db;
+            
 
+            // Retrieve the bookmark from the database
+            var bookmark = _context.Bookmarks.Find(bookmarkId);
+
+            if (bookmark != null)
+            {
+                // Check if the user has already upvoted
+                var userId = _userManager.GetUserId(User);
+                var hasUpvoted = _context.Votes.Any(u => u.BookmarkId == bookmarkId && u.UserId == userId);
+
+                if (hasUpvoted)
+                {
+                    // User has already upvoted, remove the upvote
+                    var upvote = _context.Votes.FirstOrDefault(u => u.BookmarkId == bookmarkId && u.UserId == userId);
+                    _context.Votes.Remove(upvote);
+                    bookmark.Votes--; // Decrement the upvotes
+                }
+                else
+                {
+                    // User has not upvoted, add the upvote
+                    var upvote = new Vote
+                    {
+                        BookmarkId = bookmarkId,
+                        UserId = userId
+                    };
+                    _context.Votes.Add(upvote);
+                    bookmark.Votes++; // Increment the upvotes
+                }
+
+                // Save changes to the database
+                _context.SaveChanges();
+            }
+
+            //return RedirectToAction("Index", "Bookmarks");
+            return RedirectToAction("Index");
+        }
 
     }
 }
