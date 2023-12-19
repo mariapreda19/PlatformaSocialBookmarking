@@ -101,6 +101,8 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             Bookmark bookmark = db.Bookmarks
                 .Include(b => b.User)
+                .Include("Comments")
+                .Include("Comments.User")
                 .Include(b => b.Bookmark_Has_Categories)
                     .ThenInclude(bhc => bhc.Category)
                 .Include(b => b.Bookmark_Has_Images)
@@ -140,6 +142,8 @@ namespace PlatformaSocialBookmarking.Controllers
             else
             {
                 Bookmark bookmark = db.Bookmarks.Include(b => b.User)
+                                                .Include("Comments")
+                                                .Include("Comments.User")
                                                 .Include(b => b.Bookmark_Has_Categories)
                                                     .ThenInclude(bhc => bhc.Category)
                                                 .Include(b => b.Bookmark_Has_Images)

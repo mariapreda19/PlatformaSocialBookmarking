@@ -15,8 +15,6 @@ namespace PlatformaSocialBookmarking.Models
         
         public string Description { get; set; }
 
-        public virtual Comment? Comment { get; set; }
-
         public DateTime? Date {  get; set; }
 
         public string? UserId { get; set; }
@@ -27,6 +25,8 @@ namespace PlatformaSocialBookmarking.Models
 
         [NotMapped]
         public IEnumerable<SelectListItem>? Categ { get; set; }
+
+        public virtual ICollection<Comment>? Comments { get; set; }
 
         public virtual ICollection<Bookmark_Has_Category>? Bookmark_Has_Categories { get; set; }
 
