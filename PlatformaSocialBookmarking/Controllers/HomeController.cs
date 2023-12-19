@@ -48,7 +48,7 @@ namespace PlatformaSocialBookmarking.Controllers
             var bookmarks = _db.Bookmarks.Include(b => b.Bookmark_Has_Categories)
                                          .Include(b => b.Bookmark_Has_Images)
                                             .ThenInclude(bhi => bhi.Image)
-                                         .OrderBy(b => b.Date)
+                                         .OrderByDescending(b => b.Votes)
                                          .ToList();
 
             return bookmarks;
