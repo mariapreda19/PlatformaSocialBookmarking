@@ -50,9 +50,7 @@ public class Bookmark_Has_CategoriesController : Controller
             _context.Bookmark_Has_Categories.Add(bookmarkHasCategory);
             _context.SaveChanges();
         }
-        // If the relationship already exists, you might want to handle it accordingly (show a message, etc.)
-
-        // Redirect to the home page or display a success message
+        
         return RedirectToAction("Index", "Bookmarks");
     }
 }
