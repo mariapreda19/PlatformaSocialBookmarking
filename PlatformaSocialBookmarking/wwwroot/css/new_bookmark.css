@@ -14,6 +14,7 @@
     padding-bottom: 0.4em;
     background-color: #171717;
     border-radius: 25px;
+
 }
 
 form {
@@ -21,7 +22,6 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 h2 {
@@ -32,7 +32,7 @@ h2 {
 }
 
 .form-group {
-    width : 100%;
+    width: 100%;
     display: grid;
     /*grid 4 columns*/
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -55,7 +55,6 @@ h2 {
     outline: none;
     width: 100%;
     color: #d3d3d3;
-    
 }
 
 .btn-btn-primary {
@@ -76,7 +75,7 @@ h2 {
     color: white;
 }
 
-.control-label{
+.control-label {
     padding: 1em;
 }
 
@@ -93,13 +92,13 @@ h2 {
     color: white;
 }
 
-.form-control:focus{
-    background-color: #252525;
-    border-radius: 1em;
-    transition: .4s ease-in-out;
-    color: white;
-    border-color: #171717;
-}
+    .form-control:focus {
+        background-color: #252525;
+        border-radius: 1em;
+        transition: .4s ease-in-out;
+        color: white;
+        border-color: #171717;
+    }
 
 .alert-warning {
     background-color: transparent;
@@ -109,29 +108,29 @@ h2 {
     justify-content: center;
 }
 
-.alert-warning div {
-background-color: pink;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .alert-warning div {
+        background-color: pink;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
 .app-link {
-color: black;
-background-color: white;
-text-decoration: none;
-/*jump on next line in flex*/
-display: block;
-padding: 0.5em;
-border-radius: 1em;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+    /*jump on next line in flex*/
+    display: block;
+    padding: 0.5em;
+    border-radius: 1em;
 }
 
-.app-link:hover {
-    background-color: #252525;
-    color: white;
-    transition: .3s ease-in-out;
-}
+    .app-link:hover {
+        background-color: #252525;
+        color: white;
+        transition: .3s ease-in-out;
+    }
 
 /*----------------------------------------------------------------*/
 
@@ -142,29 +141,26 @@ border-radius: 1em;
 }
 
 .imageContainer {
-
     /*corp to 1:1*/
     width: 100%;
     height: 0;
     padding-bottom: 100%;
-
     position: relative;
     cursor: pointer;
     overflow: hidden;
     border-radius: 5px;
-
 }
 
-.imageContainer img {
-    /*center and crop*/
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
+    .imageContainer img {
+        /*center and crop*/
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
 
 .overlay {
     position: absolute;
@@ -207,6 +203,7 @@ border-radius: 1em;
     .selected-label {
         /*span 3 columns*/
         grid-column: 1 / span 2;
+
     }
 }
 
@@ -230,8 +227,6 @@ border-radius: 1em;
         /*span 2 columns*/
         grid-column: 1 / span 1;
     }
-
 }
 
 /*----------------------------------------------------------------*/
-

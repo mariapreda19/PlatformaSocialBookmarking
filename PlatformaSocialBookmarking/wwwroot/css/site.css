@@ -15,6 +15,7 @@ html {
 
 body {
     margin-bottom: 5em;
+    background-color: #1f1f1f;
 }
 
 
@@ -27,31 +28,44 @@ body {
 }
 
 .navbar {
-    background-color: #dfe6e9 !important;
+    background-color: #171717 !important;
+    color : white !important;
     border: none !important;
+    border-top: 1px solid #1f1f1f !important;
     position: fixed;
     bottom: -1em;
     width: 100%;
     z-index: 10;
-
 }
 
+.navbar-light .navbar-brand {
+    color: white;
+}
+
+    .navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover {
+        color: goldenrod;
+    }
+
 a.nav-link {
-    color: #2c2c2c !important;
+    color: white !important;
 }
 
     a.nav-link:hover {
-        color: #00b894 !important;
+        color: goldenrod !important;
     }
 
 .logoutbtn {
-    color: #2c2c2c !important;
+    color: goldenrod !important;
 }
 
     .logoutbtn:hover {
-        color: #00b894 !important;
+        color: white !important;
     }
 
 .note-editor .dropdown-toggle::after {
     display: none;
+}
+
+.button.nav-link.btn.btn-link.text-dark{
+    color : white ;
 }
