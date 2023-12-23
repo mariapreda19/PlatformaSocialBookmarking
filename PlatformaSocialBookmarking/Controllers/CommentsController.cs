@@ -75,9 +75,14 @@ namespace PlatformaSocialBookmarking.Controllers
 
             if (comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
+                if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    // If it's an AJAX request, return a partial view for inline editing
+                    return PartialView("_EditCommentPartial", comm);
+                }
+
                 return View(comm);
             }
-
             else
             {
                 TempData["message"] = "Nu aveti dreptul sa editati comentariul";
@@ -85,6 +90,7 @@ namespace PlatformaSocialBookmarking.Controllers
                 return RedirectToAction("Index", "Bookmarks");
             }
         }
+
 
         [HttpPost]
         [Authorize(Roles = "User, Editor, Admin")]
@@ -113,5 +119,28 @@ namespace PlatformaSocialBookmarking.Controllers
                 return RedirectToAction("Index", "Bookmarks");
             }
         }
+
+        [HttpPost]
+        public IActionResult UpdateComment(int commentId, string editedCommentContent)
+        {
+            // Update the comment in your data store
+            Comment comm = db.Comments.Find(commentId);
+            comm.Content = editedCommentContent;
+            db.SaveChanges();
+
+            // Return the updated comment as a partial view
+            return RedirectToAction("Index", "Bookmarks");
+        }
+
+        [HttpGet]
+        public IActionResult ReloadComment(int commentId)
+        {
+            // Reload the original comment content
+            Comment comm = db.Comments.Find(commentId);
+
+            // Return to the bookmark show page
+            return RedirectToAction("Index", "Bookmarks");
+        }
+
     }
 }

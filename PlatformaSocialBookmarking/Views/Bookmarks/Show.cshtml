@@ -4,6 +4,13 @@
     ViewData["Title"] = "Bookmark Details";
 }
 
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/js/comments.js"></script>
+}
+
 <h2>@ViewData["Title"]</h2>
 
 <div class="card">
@@ -52,48 +59,33 @@
 
             <div class="col-md-8">
 
-                <div>
-
-                    <p>@comm.Content</p>
+                <div class="comment-container" data-comment-id="@comm.Id">
+                    <p class="comment-content">@comm.Content</p>
                     <small>@comm.Date</small>
                     <strong><i class="bi bi-person"></i>@comm.User.UserName</strong>
 
+                    @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                    {
+                        <div class="d-flex">
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm edit-comment" data-comment-id="@comm.Id"><i class="bi bi-pencil-square"></i>Edit</button>
+                            </div>
+
+                            <div>
+                                <form method="post" action="/Comments/Delete/@comm.Id">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit"><i class="bi bi-trash"></i>Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+
+                    <br />
                 </div>
-                <br>
-
-
-                @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
-                {
-
-                    <div class="d-flex">
-
-                        <div>
-
-                            <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Editeaza</a>
-
-                        </div>
-
-                        <div>
-
-                            <form method="post" action="/Comments/Delete/@comm.Id">
-
-                                <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Sterge</button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-                }
-
-                <br />
 
             </div>
 
             <div class="col-md-2"></div>
-
         </div>
-
     </div>
 }
 
@@ -140,4 +132,3 @@
     </div>
 
 </div>
-

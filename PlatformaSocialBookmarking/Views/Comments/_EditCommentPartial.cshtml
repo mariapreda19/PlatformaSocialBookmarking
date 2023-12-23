@@ -1,0 +1,7 @@
+﻿@model PlatformaSocialBookmarking.Models.Comment
+
+<div class="comment-container" data-comment-id="@Model.Id">
+    <textarea class="form-control" rows="2" id="editedCommentContent">@Model.Content</textarea>
+    <button class="btn btn-success btn-sm save-comment" data-comment-id="@Model.Id">Save</button>
+    <button class="btn btn-secondary btn-sm cancel-edit" data-comment-id="@Model.Id">Cancel</button>
+</div>
