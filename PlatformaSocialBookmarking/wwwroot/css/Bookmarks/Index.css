@@ -40,19 +40,44 @@
 
 .card h3 {
     position: absolute;
-    top: 50%;
+    color: white; /* Set the text color */
+    z-index: 3;
+    top: 35%;
+    left: 16%;
+}
+
+.card p {
+    position: absolute;
     left: 50%;
     color: white; /* Set the text color */
     z-index: 3;
-    top: 50%;
     left: 16%;
+}
+
+.card-footer{
+    z-index: 4;
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    background-color: rgba(0, 0, 0, 0.9);
+
+}
+
+p.category-text {
+    bottom: 7%;
+}
+
+p.user-text {
+    bottom: -43%;;
 }
 
 .btn {
     z-index: 4;
     border: none;
     border-radius: 16px;
-    top: 65%; /* Adjust the position from the bottom as needed */
+    top: 50%; /* Adjust the position from the bottom as needed */
     background-color: white;
     color: black;
     position: absolute;
@@ -72,6 +97,23 @@
         visibility: visible; /* Hide the button by default */
         left: 55%;
     }
+
+.btn-add {
+
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    padding: 0.5em;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+}
+
+.btn-add:hover {
+    background-color: goldenrod;
+    color: white;
+    transition: 0.2s;
+}
 
 
 .card:hover .image-overlay {
