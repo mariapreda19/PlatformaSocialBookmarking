@@ -46,30 +46,35 @@
                             <input type="checkbox" name="selectedImages" value="@image.Id" style="display:none;" />
                             <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
 
-                        <div class="overlay">
-                            <span class="bookmarkIcon">&#9733;</span>
+                            <div class="overlay">
+                                <span class="bookmarkIcon">&#9733;</span>
+                            </div>
                         </div>
                     </div>
-</div>
                 }
             }
             else
             {
                 <div class="alert-warning">
                     <div id="missing_content">No images available.</div>
-                    <a class= "app-link" , asp-controller="Images" asp-action="New">Go to New Image</a>
+                    <a class="app-link" , asp-controller="Images" asp-action="New">Go to New Image</a>
                 </div>
             }
         </div>
+
+
+
 
         <button type="submit" class="btn-btn-primary">Create Bookmark</button>
     </form>
 </div>
 
+
+
 <script>
+
     const imageContainers = document.querySelectorAll('.imageContainer');
 
-    // Add click event to toggle checkbox and bookmark state
     imageContainers.forEach(imageContainer => {
         imageContainer.addEventListener('click', () => {
             const checkbox = imageContainer.querySelector('input[type="checkbox"]');

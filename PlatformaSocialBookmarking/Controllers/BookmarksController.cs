@@ -246,6 +246,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
 
+
         [Authorize(Roles = "UserInregistrat,Admin")]
         public IActionResult Edit(int id)
         {
@@ -376,39 +377,34 @@ namespace PlatformaSocialBookmarking.Controllers
             _context = db;
             
 
-            // Retrieve the bookmark from the database
             var bookmark = _context.Bookmarks.Find(bookmarkId);
 
             if (bookmark != null)
             {
-                // Check if the user has already upvoted
                 var userId = _userManager.GetUserId(User);
                 var hasUpvoted = _context.Votes.Any(u => u.BookmarkId == bookmarkId && u.UserId == userId);
 
                 if (hasUpvoted)
                 {
-                    // User has already upvoted, remove the upvote
                     var upvote = _context.Votes.FirstOrDefault(u => u.BookmarkId == bookmarkId && u.UserId == userId);
                     _context.Votes.Remove(upvote);
-                    bookmark.Votes--; // Decrement the upvotes
+                    bookmark.Votes--;
                 }
                 else
                 {
-                    // User has not upvoted, add the upvote
                     var upvote = new Vote
                     {
                         BookmarkId = bookmarkId,
                         UserId = userId
                     };
                     _context.Votes.Add(upvote);
-                    bookmark.Votes++; // Increment the upvotes
+                    bookmark.Votes++; 
                 }
 
-                // Save changes to the database
+            
                 _context.SaveChanges();
             }
 
-            //return RedirectToAction("Index", "Bookmarks");
             return RedirectToAction("Index");
         }
 

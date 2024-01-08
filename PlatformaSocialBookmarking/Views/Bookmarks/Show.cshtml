@@ -16,7 +16,8 @@
 <div class="card">
     <div class="card-header">
         <h3>@Model.Title</h3>
-        <p>Created by: @Model.User?.UserName</p>
+        <p>Created by: <a asp-controller="Profile" asp-action="Index" asp-route-userId="@Model.User?.Id">@Model.User?.UserName</a></p>
+
     </div>
     <div class="card-body">
         <p>@Model.Description</p>
