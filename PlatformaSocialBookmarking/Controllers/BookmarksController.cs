@@ -405,7 +405,8 @@ namespace PlatformaSocialBookmarking.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            //refresh the page
+            return RedirectToAction("Show", new { id = bookmarkId });
         }
 
     }

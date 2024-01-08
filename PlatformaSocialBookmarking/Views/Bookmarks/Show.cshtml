@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Bookmark Details";
 }
+    
 
 @section scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="~/js/comments.js"></script>
+    <link rel="stylesheet" href="~/css/Bookmarks/Show.css" />
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -29,7 +31,9 @@
             <div class="image-container">
                 @foreach (var bookmarkHasImage in Model.Bookmark_Has_Images)
                 {
-                    <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
+                    <div calss="iamge-item">
+                        <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
+                    </div>
                 }
             </div>
         }

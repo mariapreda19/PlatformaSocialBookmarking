@@ -1,0 +1,47 @@
+﻿.image-container
+
+{
+    column-count: 4;
+    column-gap: 16px; /* Adjust the gap between columns as needed */
+    margin: 0 auto; /* Center the columns */
+}
+
+.image-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 16px; /* Adjust the margin between cards as needed */
+    break-inside: avoid-column; /* Prevent breaking inside columns */
+    overflow: hidden;
+    position: relative;
+}
+
+.image-item img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
+.image-item-overlay {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.2s ease-in-out;
+}
+
+.image-item:hover .image-item-overlay {
+    opacity: 1; /* Show on hover */
+}
+
