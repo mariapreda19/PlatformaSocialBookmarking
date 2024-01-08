@@ -17,7 +17,7 @@ namespace PlatformaSocialBookmarking.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "User, Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public ActionResult Index()
         {
             if (TempData.ContainsKey("message"))
@@ -37,13 +37,13 @@ namespace PlatformaSocialBookmarking.Controllers
             return View(category);
         }
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public ActionResult New()
         {
             return View();
         }
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         [HttpPost]
         public ActionResult New(Category cat)
         {
@@ -62,7 +62,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public ActionResult Edit(int id)
         {
             Category category = _db.Categories.Find(id);
@@ -78,7 +78,7 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         [HttpPost]
         public ActionResult Edit(int id, Category requestCategory)
         {
@@ -106,7 +106,7 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         [HttpPost]
         public ActionResult Delete(int id)
         {
