@@ -4,6 +4,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+<link rel="stylesheet" href="~/css/Home/Index.css" />
+
 
 <div class="container mt-4">
     @if (Model != null && Model.Count > 0)
@@ -13,20 +15,17 @@
             {
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <div class="card-header">
-                            <h3>@bookmark.Title</h3>
-                        </div>
-                        <div class="card-body">
-                            @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
-                            {
-                                <h5>Images:</h5>
-                                <div class="image-container">
-                                    <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />
-                                </div>
-                            }
+                        
+                        @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
+                        {
+                            <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />
 
+                        }
+                        <div class="cover-overlay"></div>
+                        <h3>@bookmark.Title</h3>
+
+                        <div class="buttons">
                             <a asp-controller="Bookmarks" asp-action="Show" asp-route-id="@bookmark.Id" class="btn btn-primary">Show Bookmark</a>
-
                             <a asp-controller="Bookmark_Has_Categories" asp-action="SelectCategory" asp-route-id="@bookmark.Id" class="btn btn-success">Save Bookmark</a>
                         </div>
                     </div>
