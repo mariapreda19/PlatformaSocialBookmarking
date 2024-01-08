@@ -48,7 +48,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "User,Editor,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -68,7 +68,7 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "User,Editor,Admin")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Edit(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -93,7 +93,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "User, Editor, Admin")]
+        [Authorize(Roles = "Editor, Admin")]
         public IActionResult Edit(int id, Comment requestComment)
         {
             Comment comm = db.Comments.Find(id);

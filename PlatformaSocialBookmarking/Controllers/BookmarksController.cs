@@ -39,7 +39,7 @@ namespace PlatformaSocialBookmarking.Controllers
             _roleManager = roleManager;
         }
 
-        [Authorize(Roles = "User, Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -96,7 +96,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
 
-        [Authorize(Roles = "User, Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public IActionResult Show(int id)
         {
             Bookmark bookmark = db.Bookmarks
@@ -127,7 +127,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "User, Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public async Task<IActionResult> Show([FromForm] Comment comment, int id)
         {
             comment.Date = DateTime.Now;
@@ -163,7 +163,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public IActionResult New()
         {
             Bookmark bookmark = new Bookmark();
@@ -182,7 +182,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
 
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         [HttpPost]
         public IActionResult New(Bookmark bookmark, string[] selectedImages, int selectedCategory)
         {
@@ -246,7 +246,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
 
-        [Authorize(Roles = "Editor,Admin")]
+        [Authorize(Roles = "UserInregistrat,Admin")]
         public IActionResult Edit(int id)
         {
 
@@ -272,7 +272,7 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin")]
+        [Authorize(Roles = "UserInregistrat,Admin")]
         public IActionResult Edit(int id, Bookmark requestBookmark)
         {
             Bookmark bookmark = db.Bookmarks.Find(id);
@@ -307,7 +307,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin")]
+        [Authorize(Roles = "UserInregistrat,Admin")]
         public ActionResult Delete(int id)
         {
             Bookmark Bookmark = db.Bookmarks.Include("Comments")
@@ -336,7 +336,7 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             ViewBag.AfisareButoane = false;
 
-            if (User.IsInRole("Editor"))
+            if (User.IsInRole("UserInregistrat"))
             {
                 ViewBag.AfisareButoane = true;
             }
