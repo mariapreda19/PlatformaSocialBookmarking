@@ -36,11 +36,30 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
+            const int pageSize = 12; 
+
             var bookmarks = GetBookmarks();
-            return View(bookmarks);
+
+            
+            int totalItems = bookmarks.Count();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            page = Math.Max(1, Math.Min(page, totalPages));
+
+            
+            int startIndex = (page - 1) * pageSize;
+            int endIndex = Math.Min(startIndex + pageSize - 1, totalItems - 1);
+
+            var paginatedBookmarks = bookmarks.Skip(startIndex).Take(pageSize).ToList();
+
+            ViewBag.currentPage = page;
+            ViewBag.lastPage = totalPages;
+
+            return View(paginatedBookmarks);
         }
+
 
 
         private List<Bookmark> GetBookmarks()
