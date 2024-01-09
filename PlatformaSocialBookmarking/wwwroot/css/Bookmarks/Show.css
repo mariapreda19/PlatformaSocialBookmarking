@@ -1,7 +1,9 @@
-﻿.image-container
+﻿/*---------------------container for images--------------------------*/
+
+.image-container
 
 {
-    column-count: 4;
+    column-count: 3;
     column-gap: 16px; /* Adjust the gap between columns as needed */
     margin: 0 auto; /* Center the columns */
 }
@@ -45,3 +47,147 @@
     opacity: 1; /* Show on hover */
 }
 
+/*-------------------------page style-------------------------------*/
+
+body {
+    background-color: #1f1f1f;
+}
+
+.wrapper {
+    flex-direction: column;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top: 2.5em;
+    margin-bottom: 2.5em;
+    padding-bottom: 0.4em;
+    background-color: #171717;
+    border-radius: 25px;
+}
+
+.comment-container {
+    background-color: white;
+    width: 100%;
+}
+
+strong
+{
+    color: white;
+}
+
+small
+{
+    color: white;
+}
+
+label
+{
+color: white;
+}
+
+h3{
+color: white;
+}
+
+p{
+color: white;
+}
+
+a{
+color: white;
+}
+
+h5{
+    color: white;
+}
+
+h2{
+color: white;
+margin: 1em;
+text-align: center;
+}
+
+.card{
+    background-color: transparent;
+}
+
+.card-header{
+    background-color: transparent;
+}
+
+.card-body {
+background-color: transparent;
+}
+
+.comment-container{
+    background-color: #1f1f1f;
+    border-radius: 15px;
+    padding: 1em;
+    margin: 1em;
+    left: 0;
+}
+
+/*---------------------------buttons-----------------------------*/
+
+.buttons-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn.btn-primary {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    top: 50%;
+    background-color: #252525;
+    color: white;
+}
+
+
+.btn.btn-success {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    top: 50%;
+    background-color: #252525;
+    color: white;
+}
+
+
+.btn-vote {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    top: 50%;
+    background-color: white;
+    color: black;
+}
+
+    .btn-vote:hover {
+        background-color: goldenrod;
+        color: white;
+    }
+
+button.nav-link.btn.btn-link.dark-text {
+    color: white;
+}
+
+
+.form-control {
+    width: 100%;
+    
+    border-radius: 1.3em;
+    padding: 0.6em;
+    margin: 0.2em;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #171717;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+    .form-control:focus {
+        background-color: #252525;
+        border-radius: 1em;
+        transition: .4s ease-in-out;
+        color: white;
+        border-color: #171717;
+    }

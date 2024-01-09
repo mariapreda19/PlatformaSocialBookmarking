@@ -1,0 +1,43 @@
+﻿h2 {
+    color: white;
+    margin: 1em;
+    text-align: center;
+}
+
+label {
+    color: white;
+}
+
+.btn.btn-success {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    top: 50%;
+    background-color: white;
+    color: black;
+}
+
+    .btn.btn-success:hover {
+        background-color: #171717;
+        color: white;
+    }
+
+.form-control {
+    width: 100%;
+    border-radius: 1.3em;
+    padding: 0.6em;
+    margin: 0.2em;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #171717;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+    .form-control:focus {
+        background-color: #252525;
+        border-radius: 1em;
+        transition: .4s ease-in-out;
+        color: white;
+        border-color: #171717;
+    }

@@ -69,3 +69,16 @@ a.nav-link {
 .button.nav-link.btn.btn-link.text-dark{
     color : white ;
 }
+
+.h2 {
+    color: white;
+}
+
+.text-dark {
+    color: white;
+}
+
+.form-control {
+    border-radius: 16px;
+    border: none;
+}

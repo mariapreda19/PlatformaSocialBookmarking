@@ -7,7 +7,6 @@
 
 @section scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="~/js/comments.js"></script>
     <link rel="stylesheet" href="~/css/Bookmarks/Show.css" />
@@ -15,7 +14,14 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<div class="wrapper">
+
 <div class="card">
+    <br />
+        <div class="buttons-container">
+            <a asp-controller="Bookmarks" asp-action="Index" class="btn btn-primary">Back to Bookmarks</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary" id="home_button">Back to Home</a>
+        </div>
     <div class="card-header">
         <h3>@Model.Title</h3>
         <p>Created by: <a asp-controller="Profile" asp-action="Index" asp-route-userId="@Model.User?.Id">@Model.User?.UserName</a></p>
@@ -45,12 +51,8 @@
         <p>Upvotes: @Model.Votes</p>
         <form asp-controller="Bookmarks" asp-action="Upvote" method="post">
             <input type="hidden" name="bookmarkId" value="@Model.Id" />
-            <button type="submit" class="btn btn-success">Upvote</button>
+            <button type="submit" class="btn btn-vote">Upvote</button>
         </form>
-    </div>
-
-    <div>
-        <a asp-controller="Bookmarks" asp-action="Index"  class="btn btn-primary">Back to Bookmarks</a>
     </div>
 </div>
 
@@ -135,5 +137,7 @@
         <div class="col-md-2"></div>
 
     </div>
+
+</div>
 
 </div>

@@ -148,9 +148,10 @@
     padding: 10px 15px;
     text-align: center;
     text-decoration: none;
-    color: #333;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #171717 !important;
+    color: white !important;
+    border: none !important;
+
     border-radius: 4px;
     transition: background-color 0.3s;
 }
@@ -160,9 +161,8 @@
     }
 
     .page-link.active {
-        background-color: #007bff;
-        color: #fff;
-        border-color: #007bff;
+        background-color: #171717;
+        color: white;
     }
 
 
