@@ -49,9 +49,20 @@
             <p>Category: @Model.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
         }
         <p>Upvotes: @Model.Votes</p>
-        <form asp-controller="Bookmarks" asp-action="Upvote" method="post">
+
+            <div class="buttons-container">
+                <a asp-controller="Bookmarks" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            
+
+                <form method="post" action="@Url.Action("Delete", "Bookmarks", new { id = Model.Id})">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete Bookmark</button>
+                </form>
+             </div>
+
+            <form asp-controller="Bookmarks" asp-action="Upvote" method="post">
             <input type="hidden" name="bookmarkId" value="@Model.Id" />
-            <button type="submit" class="btn btn-vote">Upvote</button>
+            <button type="submit" class="btn btn-vote">Upvote</button>"
         </form>
     </div>
 </div>

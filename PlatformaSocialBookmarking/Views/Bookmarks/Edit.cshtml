@@ -1,5 +1,108 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PlatformaSocialBookmarking.Models.Bookmark
+
 @{
+    ViewData["Title"] = "Edit Bookmark";
 }
+
+<link rel="stylesheet" href="~/css/Bookmarks/Edit.css" />
+
+<div class="form-wrapper">
+    <h2>@ViewData["Title"]</h2>
+    <p> Prin editarea bookmarkului veti piede toate voturile pe care acesta le-a inregistrat</p>
+
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["message"]
+        </div>
+    }
+
+    <form asp-action="Edit" method="post">
+        <div class="form-group">
+            <label asp-for="Title" class="control-label">Title</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="control-label">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Category</label>
+            @Html.DropDownList("selectedCategory", ViewBag.UserCategories as SelectList, "Select Category", new { @class = "form-control" })
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const select = document.querySelector('select[name="selectedCategory"]');
+                    if (select) {
+                        select.value = "@Model.Bookmark_Has_Categories.First()?.CategoryId";
+                    }
+                });
+            </script>
+        </div>
+
+        <div class="form-group">
+            <label class="selected-label">Select Images</label>
+            <br />
+            @if (ViewBag.UserImages != null && ViewBag.UserImages.Count > 0)
+            {
+                @foreach (var image in ViewBag.UserImages)
+                {
+                    <div class=" images-wrapper">
+                        <div class="imageContainer">
+                            <input type="checkbox" name="selectedImages" value="@image.Id" style="display:none;" />
+                            <img src="@image.Url" alt="Selected Image" class="img-thumbnail" />
+
+                            <div class="overlay">
+                                <span class="bookmarkIcon">&#9733;</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                foreach (var bookmarkHasImage in Model.Bookmark_Has_Images)
+                {
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const checkbox = document.querySelector('input[name="selectedImages"][value="@bookmarkHasImage.ImageId"]');
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                const imageContainer = checkbox.closest('.imageContainer');
+                                if (imageContainer) {
+                                    imageContainer.classList.add('bookmarked');
+                                }
+                            }
+                        });
+                    </script>
+                }
+            }
+            else
+            {
+                <div class="alert-warning">
+                    <div id="missing_content">No images available.</div>
+                    <a class="app-link" , asp-controller="Images" asp-action="New">Go to New Image</a>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn-btn-primary">Save</button>
+    </form>
+</div>
+
+
+
+<script>
+
+    const imageContainers = document.querySelectorAll('.imageContainer');
+
+    imageContainers.forEach(imageContainer => {
+        imageContainer.addEventListener('click', () => {
+            const checkbox = imageContainer.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            imageContainer.classList.toggle('bookmarked');
+        });
+    });
+</script>

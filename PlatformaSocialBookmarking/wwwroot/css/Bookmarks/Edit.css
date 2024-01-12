@@ -78,6 +78,24 @@ h2 {
     color: white;
 }
 
+.btn {
+    /*align to conter in the flex*/
+    justify-self: center;
+    align-items: center;
+    align-self: center;
+    justify-items: center;
+    padding: 0.5em;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+    border-radius: 1em;
+    margin: 0.2em;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+
 .control-label {
     padding: 1em;
 }

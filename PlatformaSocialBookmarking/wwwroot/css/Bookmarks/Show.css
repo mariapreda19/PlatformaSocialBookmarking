@@ -132,6 +132,7 @@ background-color: transparent;
 .buttons-container{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .btn.btn-primary {
@@ -171,6 +172,8 @@ background-color: transparent;
 button.nav-link.btn.btn-link.dark-text {
     color: white;
 }
+
+
 
 
 .form-control {

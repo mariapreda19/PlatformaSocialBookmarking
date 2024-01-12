@@ -237,93 +237,133 @@ namespace PlatformaSocialBookmarking.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
         [Authorize(Roles = "UserInregistrat,Admin")]
         public IActionResult Edit(int id)
         {
-
-            Bookmark bookmark = db.Bookmarks.Include("Category")
-                                            .Include("Images")
-                                            .Where(bkm => bkm.Id == id)
-                                            .First();
-
-            bookmark.Categ = GetAllCategories();
+            Bookmark bookmark = db.Bookmarks.Include(b => b.User)
+                                            .Include(b => b.Bookmark_Has_Categories)
+                                            .Include(b => b.Bookmark_Has_Images)
+                                            .First(b => b.Id == id);
 
             if (bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
+                var userId = _userManager.GetUserId(User);
+                var userImages = db.Images.Where(img => img.UserId == userId).ToList();
+                var userCategories = db.Categories.Where(cat => cat.UserId == userId).ToList();
+
+                ViewBag.UserImages = userImages;
+                ViewBag.UserCategories = new SelectList(userCategories, "Id", "CategoryName");
+
                 return View(bookmark);
             }
-
             else
             {
-                TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui bookmark care nu va apartine";
+                TempData["message"] = "Nu aveti dreptul sa editati un bookmark care nu va apartine";
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Index");
             }
-
         }
 
         [HttpPost]
         [Authorize(Roles = "UserInregistrat,Admin")]
-        public IActionResult Edit(int id, Bookmark requestBookmark)
+
+        public IActionResult Edit(Bookmark bookmark, string[] selectedImages, int selectedCategory)
         {
-            Bookmark bookmark = db.Bookmarks.Find(id);
-
-
             if (ModelState.IsValid)
             {
-                if (bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                Bookmark Bookmark = db.Bookmarks.Include(b => b.User)
+                                                .Include(b => b.Bookmark_Has_Categories)
+                                                .Include(b => b.Bookmark_Has_Images)
+                                                .First(b => b.Id == bookmark.Id);
+
+                if (Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
                 {
-                    bookmark.Title = requestBookmark.Title;
-                    bookmark.Description = requestBookmark.Description;
+                    Bookmark.Title = bookmark.Title;
+                    Bookmark.Description = bookmark.Description;
+                    Bookmark.Date = DateTime.Now;
+
+                    db.SaveChanges();
+
+                    if (selectedImages != null)
+                    {
+                        //delete the old links
+                        var bookmarkHasImages = db.Bookmark_Has_Images.Where(bhi => bhi.BookmarkId == bookmark.Id).ToList();
+                        db.Bookmark_Has_Images.RemoveRange(bookmarkHasImages);
+                        db.SaveChanges();
+
+
+                        foreach (var imageId in selectedImages)
+                        {
+                            var bookmarkHasImage = new Bookmark_Has_Image
+                            {
+                                BookmarkId = bookmark.Id,
+                                ImageId = int.Parse(imageId)
+                            };
+
+                            db.Bookmark_Has_Images.Add(bookmarkHasImage);
+                        }
+
+                        db.SaveChanges();
+                    }
+
+                    var bookmarkHasCategory = new Bookmark_Has_Category
+                    {
+                        BookmarkId = bookmark.Id,
+                        CategoryId = selectedCategory
+                    };
+
+                    db.Bookmark_Has_Categories.Add(bookmarkHasCategory);
+                    db.SaveChanges();
+
                     TempData["message"] = "Bookmarkul a fost modificat";
                     TempData["messageType"] = "alert-success";
-                    db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["message"] = "Nu aveti dreptul sa faceti modificari asupra unui bookmark care nu va apartine";
+                    TempData["message"] = "Nu aveti dreptul sa editati un bookmark care nu va apartine";
                     TempData["messageType"] = "alert-danger";
                     return RedirectToAction("Index");
                 }
             }
             else
             {
-                requestBookmark.Categ = GetAllCategories();
-                return View(requestBookmark);
+                var userId = _userManager.GetUserId(User);
+                var userImages = db.Images.Where(img => img.UserId == userId).ToList();
+                var userCategories = db.Categories.Where(cat => cat.UserId == userId).ToList();
+
+                ViewBag.UserImages = userImages;
+                ViewBag.UserCategories = new SelectList(userCategories, "Id", "CategoryName");
+
+                return View(bookmark);
             }
         }
-
-
 
 
         [HttpPost]
         [Authorize(Roles = "UserInregistrat,Admin")]
         public ActionResult Delete(int id)
         {
-            Bookmark Bookmark = db.Bookmarks.Include("Comments")
-                                         .Where(art => art.Id == id)
-                                         .First();
+            Bookmark bookmark = db.Bookmarks.Find(id);
 
-            if (Bookmark.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+            if (bookmark == null)
             {
-                db.Bookmarks.Remove(Bookmark);
+                TempData["message"] = "Bookmarkul nu a fost gasit";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
+
+            string currentUserId = _userManager.GetUserId(User);
+
+            if (currentUserId == bookmark.UserId || User.IsInRole("Admin"))
+            {
+                db.Bookmarks.Remove(bookmark);
                 db.SaveChanges();
+
                 TempData["message"] = "Bookmarkul a fost sters";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
-
             else
             {
                 TempData["message"] = "Nu aveti dreptul sa stergeti un bookmark care nu va apartine";
@@ -331,6 +371,7 @@ namespace PlatformaSocialBookmarking.Controllers
                 return RedirectToAction("Index");
             }
         }
+
 
 
         private void SetAccessRights()
