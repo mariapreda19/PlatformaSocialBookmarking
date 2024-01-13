@@ -45,6 +45,13 @@
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:ProiectSocialBookmarking5",
       "dynamicId": null
+    },
+    "mssql8": {
+      "serviceConnectorResourceId": "",
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:ProiectSocialBookmarkin6",
+      "dynamicId": null
     }
   }
 }

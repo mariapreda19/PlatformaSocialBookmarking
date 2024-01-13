@@ -33,6 +33,11 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:ProiectSocialBookmarking5",
       "dynamicId": null
+    },
+    "mssql8": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ProiectSocialBookmarkin6",
+      "dynamicId": null
     }
   }
 }
