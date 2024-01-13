@@ -12,6 +12,29 @@
     <link rel="stylesheet" href="~/css/Bookmarks/Show.css" />
 }
 
+<style>
+    .masonry-container {
+        column-count: 4;
+        column-gap: 16px;
+        margin: 0 auto;
+    }
+
+    .card2 {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 16px;
+        break-inside: avoid-column;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .card2 img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.2s ease-in-out;
+        }
+</style>
+
 <h2>@ViewData["Title"]</h2>
 
 <div class="wrapper">
@@ -34,14 +57,18 @@
         @if (Model.Bookmark_Has_Images != null && Model.Bookmark_Has_Images.Any())
         {
             <h5>Images:</h5>
-            <div class="image-container">
-                @foreach (var bookmarkHasImage in Model.Bookmark_Has_Images)
-                {
-                    <div calss="iamge-item">
-                        <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
-                    </div>
-                }
-            </div>
+            
+
+                <div class="masonry-container">
+                    @foreach (var bookmarkHasImage in Model.Bookmark_Has_Images)
+                    {
+                        <div class="card2">
+                            <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
+                               
+                        
+                        </div>
+                    }
+                </div>
         }
 
         @if (Model.Bookmark_Has_Categories != null && Model.Bookmark_Has_Categories.Any())

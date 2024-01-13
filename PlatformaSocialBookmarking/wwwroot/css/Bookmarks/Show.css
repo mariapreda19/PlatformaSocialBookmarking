@@ -1,17 +1,18 @@
 ﻿/*---------------------container for images--------------------------*/
 
 .image-container {
-    column-count: 3;
+    column-count: 4;
     column-gap: 16px; /* Adjust the gap between columns as needed */
     margin: 0 auto; /* Center the columns */
     margin-top: 20px; /* Add some top margin */
     margin-bottom: 20px; /* Add some bottom margin */
-    
 }
 
 .image-item {
     display: inline-block;
     width: 100%;
+    height: auto;
+    margin-top: 100px;
     margin-bottom: 16px; /* Adjust the margin between cards as needed */
     break-inside: avoid-column; /* Prevent breaking inside columns */
     overflow: hidden;
