@@ -4,6 +4,10 @@
     ViewData["Title"] = "Categories";
 }
 
+<link rel="stylesheet" href="~/css/Categories/New.css" />
+<link rel="stylesheet" href="~/css/Categories/Index.css" />
+
+
 <h2>@ViewData["Title"]</h2>
 
 @if (TempData["message"] != null)
@@ -19,7 +23,7 @@
     <div calss="image-container">
     @foreach (var category in Model)
     {
-        <div class="col-md-4 mb-4">
+
             <div class="card">
 
                 <h3>@category.CategoryName</h3>
@@ -30,14 +34,13 @@
                 <div class="cover-overlay"></div>
 
                 <div class=" =buttons">
-                    <a asp-action="Show" asp-route-id="@category.Id" class="btn btn-info">Show</a>
                     <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning">Edit</a>
                     <form asp-action="Delete" asp-route-id="@category.Id" method="post" class="d-inline">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                     </form>
                 </div>
             </div>
-        </div>
+
     }
     </div>
 </div>

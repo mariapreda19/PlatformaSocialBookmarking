@@ -1,0 +1,21 @@
+﻿.image-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
+    gap: 16px;
+    margin: 0 auto;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card img {
+    width: 300px;
+    height: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
