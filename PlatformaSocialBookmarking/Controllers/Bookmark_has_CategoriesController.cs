@@ -37,20 +37,23 @@ public class Bookmark_Has_CategoriesController : Controller
     [HttpPost]
     public IActionResult Save(int bookmarkId, int selectedCategory)
     {
-        // Check if the relationship already exists
-        if (!_context.Bookmark_Has_Categories.Any(bhc => bhc.BookmarkId == bookmarkId && bhc.CategoryId == selectedCategory))
-        {
-            // If not, create the relationship
-            var bookmarkHasCategory = new Bookmark_Has_Category
+        // Check if the association already exists
+        var existingAssociation = _context.Bookmark_Has_Categories
+            .FirstOrDefault(bhc => bhc.BookmarkId == bookmarkId && bhc.CategoryId == selectedCategory);
+
+       
+            // Create a new association
+            var newAssociation = new Bookmark_Has_Category
             {
                 BookmarkId = bookmarkId,
                 CategoryId = selectedCategory
             };
 
-            _context.Bookmark_Has_Categories.Add(bookmarkHasCategory);
+            _context.Bookmark_Has_Categories.Add(newAssociation);
             _context.SaveChanges();
-        }
         
+
         return RedirectToAction("Index", "Bookmarks");
     }
+
 }
