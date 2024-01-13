@@ -50,10 +50,12 @@
 
                     <div class="card-footer">
                         <p class="user-text">Created by: @bookmark.User?.UserName</p>
-                        @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any())
+                        @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any(bhc => bhc.Category.User.Id == @ViewBag.userId))
                         {
-                            <p class="category-text">Category: @bookmark.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
+                            <p class="category-text">Category: @bookmark.Bookmark_Has_Categories.First(bhc => bhc.Category.User.Id == @ViewBag.userId)?.Category?.CategoryName</p>
                         }
+
+
                     </div>
                     <div class=" =buttons">
                         <a asp-controller="Bookmarks" asp-action="Show" asp-route-id="@bookmark.Id" class="btn btn-primary">Show Bookmark</a>

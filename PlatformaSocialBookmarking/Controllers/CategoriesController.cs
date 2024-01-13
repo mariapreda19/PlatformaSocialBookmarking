@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlatformaSocialBookmarking.Data;
 using PlatformaSocialBookmarking.Models;
 
@@ -9,12 +10,22 @@ namespace PlatformaSocialBookmarking.Controllers
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _db;
+
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CategoriesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public CategoriesController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager
+            )
         {
             _db = context;
+
             _userManager = userManager;
+
+            _roleManager = roleManager;
         }
 
         [Authorize(Roles = "UserInregistrat, Admin")]
@@ -25,7 +36,11 @@ namespace PlatformaSocialBookmarking.Controllers
                 ViewBag.Message = TempData["message"].ToString();
             }
 
-            var categories = _db.Categories.OrderBy(category => category.CategoryName).ToList();
+            var userId = _userManager.GetUserId(User);
+
+            var categories = _db.Categories.Include(c => c.User)
+                              .Where(c => c.User.Id == userId)
+                              .OrderBy(category => category.CategoryName).ToList();
             ViewBag.Categories = categories;
             return View(categories);
         }
@@ -115,7 +130,7 @@ namespace PlatformaSocialBookmarking.Controllers
             if (category.UserId == _userManager.GetUserId(User))
             {
                 _db.Categories.Remove(category);
-                TempData["message"] = "Categoria a fost stearsa";
+                TempData["message"] = "Categoria a fost stearsa"; 
 
                 try
                 {

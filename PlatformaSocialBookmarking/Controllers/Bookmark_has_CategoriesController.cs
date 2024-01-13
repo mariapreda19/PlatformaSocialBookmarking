@@ -1,33 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PlatformaSocialBookmarking.Data;
 using PlatformaSocialBookmarking.Models;
 
 public class Bookmark_Has_CategoriesController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _db;
 
-    public Bookmark_Has_CategoriesController(ApplicationDbContext context)
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    public Bookmark_Has_CategoriesController(
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager
+        )
     {
-        _context = context;
+        _db = context;
+
+        _userManager = userManager;
+
+        _roleManager = roleManager;
     }
 
     [HttpGet]
     public IActionResult SelectCategory(int id)
     {
-        // Retrieve the bookmark by id
-        var bookmark = _context.Bookmarks.FirstOrDefault(b => b.Id == id);
+        var bookmark = _db.Bookmarks.FirstOrDefault(b => b.Id == id);
 
         if (bookmark == null)
         {
-            // Handle the case where the bookmark is not found
             return NotFound();
         }
 
-        // Retrieve the list of categories
-        var categories = _context.Categories.ToList();
+        // toate categoriile adaugate de utilizatorul care incearca sa faca save-ul
+        var userId = _userManager.GetUserId(User);
+        var categories = _db.Categories.Where(c => c.User.Id == userId).ToList();
 
-        // Set up ViewBag for the view
+        //viewbagul
         ViewBag.BookmarkId = bookmark.Id;
         ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
 
@@ -37,20 +49,21 @@ public class Bookmark_Has_CategoriesController : Controller
     [HttpPost]
     public IActionResult Save(int bookmarkId, int selectedCategory)
     {
-        // Check if the association already exists
-        var existingAssociation = _context.Bookmark_Has_Categories
+
+        
+        var existingAssociation = _db.Bookmark_Has_Categories
             .FirstOrDefault(bhc => bhc.BookmarkId == bookmarkId && bhc.CategoryId == selectedCategory);
 
        
-            // Create a new association
+            // o noua inregistrare in tabelul asociativ
             var newAssociation = new Bookmark_Has_Category
             {
                 BookmarkId = bookmarkId,
                 CategoryId = selectedCategory
             };
 
-            _context.Bookmark_Has_Categories.Add(newAssociation);
-            _context.SaveChanges();
+            _db.Bookmark_Has_Categories.Add(newAssociation);
+            _db.SaveChanges();
         
 
         return RedirectToAction("Index", "Bookmarks");
