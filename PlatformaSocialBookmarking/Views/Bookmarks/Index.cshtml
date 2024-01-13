@@ -18,18 +18,6 @@
         </div>
     }
 
-    <form method="GET">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control"
-                   placeholder="Search topics or keywords" name="search"
-                   value="@ViewBag.SearchString">
-            <button class="btn btn-outline-success"
-                    type="submit">
-                Search
-            </button>
-        </div>
-    </form>
-
 
     <a asp-controller="Bookmarks" asp-action="New" class="btn-add">New Bookmark</a>
 
@@ -40,7 +28,7 @@
                 <div class="card">
 
                     <h3>@bookmark.Title</h3>
-               
+
                     @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
                     {
                         <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />

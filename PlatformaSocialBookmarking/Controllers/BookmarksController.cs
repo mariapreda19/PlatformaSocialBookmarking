@@ -240,7 +240,7 @@ namespace PlatformaSocialBookmarking.Controllers
                 var userCategories = db.Categories.Where(cat => cat.UserId == userId).ToList();
                 ViewBag.UserImages = userImages;
                 ViewBag.UserCategories = new SelectList(userCategories, "Id", "CategoryName");
-
+                TempData["message"] = "Bookmarkul nu a fost adaugat. Completati toate campurile";
                 return View(bookmark);
             }
         }

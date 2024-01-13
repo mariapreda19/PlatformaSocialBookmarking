@@ -1,154 +1,55 @@
-﻿@model PlatformaSocialBookmarking.Models.Bookmark
+﻿@model List<PlatformaSocialBookmarking.Models.Bookmark>
 
 @{
-    ViewData["Title"] = "Bookmark Details";
-}
-    
+    ViewData["Title"] = "Bookmarks";
 
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="~/js/comments.js"></script>
-    <link rel="stylesheet" href="~/css/Bookmarks/Show.css" />
+    <link rel="stylesheet" href="~/css/Bookmarks/Index.css" />
+
 }
 
-<h2>@ViewData["Title"]</h2>
-
-<div class="wrapper">
-
-<div class="card">
-    <br />
-        <div class="buttons-container">
-            <a asp-controller="Bookmarks" asp-action="Index" class="btn btn-primary">Back to Bookmarks</a>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary" id="home_button">Back to Home</a>
-        </div>
-    <div class="card-header">
-        <h3>@Model.Title</h3>
-        <p>Created by: <a asp-controller="Profile" asp-action="Index" asp-route-userId="@Model.User?.Id">@Model.User?.UserName</a></p>
-
-    </div>
-    <div class="card-body">
-        <p>@Model.Description</p>
-
-        
-        @if (Model.Bookmark_Has_Images != null && Model.Bookmark_Has_Images.Any())
-        {
-            <h5>Images:</h5>
-            <div class="image-container">
-                @foreach (var bookmarkHasImage in Model.Bookmark_Has_Images)
-                {
-                    <div calss="iamge-item">
-                        <img src="@bookmarkHasImage.Image?.Url" alt="Image" class="img-thumbnail" />
-                    </div>
-                }
-            </div>
-        }
-
-        @if (Model.Bookmark_Has_Categories != null && Model.Bookmark_Has_Categories.Any())
-        {
-            <p>Category: @Model.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
-        }
-        <p>Upvotes: @Model.Votes</p>
-
-            <div class="buttons-container">
-                <a asp-controller="Bookmarks" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-            
-
-                <form method="post" action="@Url.Action("Delete", "Bookmarks", new { id = Model.Id})">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Delete Bookmark</button>
-                </form>
-             </div>
-
-            <form asp-controller="Bookmarks" asp-action="Upvote" method="post">
-            <input type="hidden" name="bookmarkId" value="@Model.Id" />
-            <button type="submit" class="btn btn-vote">Upvote</button>"
-        </form>
-    </div>
-</div>
-
-
-
-@foreach (var comm in Model.Comments)
-{
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
-
-            <div class="col-md-8">
-
-                <div class="comment-container" data-comment-id="@comm.Id">
-                    <p class="comment-content">@comm.Content</p>
-                    <small>@comm.Date</small>
-                    <strong><i class="bi bi-person"></i>@comm.User.UserName</strong>
-
-                    @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
-                    {
-                        <div class="d-flex">
-                            <div>
-                                <button class="btn btn-outline-primary btn-sm edit-comment" data-comment-id="@comm.Id"><i class="bi bi-pencil-square"></i>Edit</button>
-                            </div>
-
-                            <div>
-                                <form method="post" action="/Comments/Delete/@comm.Id">
-                                    <button class="btn btn-outline-danger btn-sm" type="submit"><i class="bi bi-trash"></i>Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                    }
-
-                    <br />
-                </div>
-
-            </div>
-
-            <div class="col-md-2"></div>
-        </div>
-    </div>
-}
-
-
-@* Afisarea formularului in care se poate adauga un comentariu *@
 
 <div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["message"]
+        </div>
+    }
+
+
+    <a asp-controller="Bookmarks" asp-action="New" class="btn-add">New Bookmark</a>
 
     <div class="row">
+        @foreach (var bookmark in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
 
-        <div class="col-md-2"></div>
+                    <h3>@bookmark.Title</h3>
 
-        <div class="col-md-8">
+                    @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
+                    {
+                        <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />
+                    }
 
-            <div class="card">
+                    <div class="cover-overlay"></div>
 
-                <form method="post" action="/Bookmarks/Show/@Model.Id">
+                    <div class="card-footer">
+                        <p class="user-text">Created by: @bookmark.User?.UserName</p>
+                        @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any(bhc => bhc.Category.User.Id == @ViewBag.userId))
+                        {
+                            <p class="category-text">Category: @bookmark.Bookmark_Has_Categories.First(bhc => bhc.Category.User.Id == @ViewBag.userId)?.Category?.CategoryName</p>
+                        }
 
-                    <div class="card-body">
-
-                        <input type="hidden" name="BookmarkId" value="@Model.Id" />
-
-                        <label>Continut comentariu</label>
-                        <br />
-
-                        <textarea class="form-control" name="Content"></textarea>
-
-                        @Html.ValidationMessage("Content", null, new { @class = "text-danger"})
-
-                        <br /><br />
-
-                        <button class="btn btn-success " type="submit">Adauga comentariul</button>
 
                     </div>
-
-                </form>
-
+                    <div class=" =buttons">
+                        <a asp-controller="Bookmarks" asp-action="Show" asp-route-id="@bookmark.Id" class="btn btn-primary">Show Bookmark</a>
+                    </div>
+                </div>
             </div>
-
-        </div>
-
-        <div class="col-md-2"></div>
-
+        }
     </div>
-
-</div>
-
 </div>

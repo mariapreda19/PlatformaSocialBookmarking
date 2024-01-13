@@ -24,7 +24,7 @@ namespace PlatformaSocialBookmarking.Controllers
             )
         {
             db = context;
-            
+
             _userManager = userManager;
 
             _roleManager = roleManager;
@@ -35,11 +35,11 @@ namespace PlatformaSocialBookmarking.Controllers
         public IActionResult New(Comment comm)
         {
             comm.Date = DateTime.Now;
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Comments.Add(comm);
                 db.SaveChanges();
-                return Redirect("/Bookmarks/Show" +  comm.BookmarkId);
+                return Redirect("/Bookmarks/Show" + comm.BookmarkId);
             }
             else
             {
@@ -47,8 +47,8 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
+        [Authorize(Roles = "UserInregistrat,Admin")]
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -68,7 +68,7 @@ namespace PlatformaSocialBookmarking.Controllers
             }
         }
 
-        [Authorize(Roles = "Editor,Admin")]
+        [Authorize(Roles = "UserInregistrat,Admin")]
         public IActionResult Edit(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -93,7 +93,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "UserInregistrat, Admin")]
         public IActionResult Edit(int id, Comment requestComment)
         {
             Comment comm = db.Comments.Find(id);

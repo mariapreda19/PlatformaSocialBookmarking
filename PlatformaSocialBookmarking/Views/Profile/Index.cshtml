@@ -15,7 +15,7 @@
                 <img src="~/images/profile_pic_placeholder.png" />
             </div>
             <div class="profile_info">
-                <h3>@User.Identity.Name</h3>
+                <h3>@ViewBag.User?.UserName</h3>
                 <p>Bookmarks: @Model.Count</p>
 
             </div>
@@ -30,17 +30,8 @@
         </div>
     }
 
-    <form method="GET">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control"
-                   placeholder="Search topics or keywords" name="search"
-                   value="@ViewBag.SearchString">
-            <button class="btn btn-outline-success"
-                    type="submit">
-                Search
-            </button>
-        </div>
-    </form>
+
+
 
 
     <div class="row">
@@ -48,9 +39,7 @@
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
-
                     <h3>@bookmark.Title</h3>
-
                     @if (bookmark.Bookmark_Has_Images != null && bookmark.Bookmark_Has_Images.Any())
                     {
                         <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />
@@ -58,16 +47,17 @@
                     <div class="cover-overlay"></div>
 
                     <div class="card-footer">
-                        @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any())
+                        @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any(bhc => bhc.Category.UserId == ViewBag.User.Id))
                         {
-                            <p class="category-text">Category: @bookmark.Bookmark_Has_Categories.First()?.Category?.CategoryName</p>
+                            <p class="category-text">Category: @bookmark.Bookmark_Has_Categories.First(bhc => bhc.Category.UserId == ViewBag.User.Id)?.Category?.CategoryName</p>
                         }
                     </div>
-                    <div class=" =buttons">
+                    <div class="buttons">
                         <a asp-controller="Bookmarks" asp-action="Show" asp-route-id="@bookmark.Id" class="btn btn-primary">Show Bookmark</a>
                     </div>
                 </div>
             </div>
         }
     </div>
+
 </div>

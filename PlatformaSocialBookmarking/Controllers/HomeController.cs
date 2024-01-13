@@ -19,7 +19,7 @@ namespace PlatformaSocialBookmarking.Controllers
             _db = db;
         }
 
-      
+
 
         [HttpPost]
         public IActionResult AddCategory(string categoryName, string coverUrl)
@@ -38,17 +38,39 @@ namespace PlatformaSocialBookmarking.Controllers
 
         public IActionResult Index(int page = 1)
         {
-            const int pageSize = 12; 
+            const int pageSize = 12;
 
             var bookmarks = GetBookmarks();
 
-            
+            var search = HttpContext.Request.Query["search"].ToString().Trim();
+            if (!string.IsNullOrEmpty(search))
+            {
+                search = search.ToLower(); // Convert search string to lowercase for case-insensitive matching
+
+                bookmarks = _db.Bookmarks
+                    .Where(bk =>
+                        bk.Title.ToLower().Contains(search) ||
+                        bk.Description.ToLower().Contains(search) ||
+                        bk.Bookmark_Has_Categories.Any(bhc =>
+                            bhc.Category.CategoryName.ToLower().Contains(search)
+                        )
+                    )
+                    .Include(b => b.Bookmark_Has_Categories)
+                    .ThenInclude(bhc => bhc.Category)
+                    .Include(b => b.User)
+                    .Include(b => b.Bookmark_Has_Images)
+                    .ThenInclude(bhi => bhi.Image)
+                    .OrderBy(b => b.Date)
+                    .ToList();
+            }
+
+            ViewBag.SearchString = search;
+
             int totalItems = bookmarks.Count();
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
             page = Math.Max(1, Math.Min(page, totalPages));
 
-            
             int startIndex = (page - 1) * pageSize;
             int endIndex = Math.Min(startIndex + pageSize - 1, totalItems - 1);
 
@@ -57,8 +79,24 @@ namespace PlatformaSocialBookmarking.Controllers
             ViewBag.currentPage = page;
             ViewBag.lastPage = totalPages;
 
+            if (!string.IsNullOrEmpty(search))
+            {
+                ViewBag.BaseUrl = $"/Home/Index/?search={search}";
+            }
+            else
+            {
+                ViewBag.BaseUrl = "/Home/Index";
+            }
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
             return View(paginatedBookmarks);
         }
+
 
 
 

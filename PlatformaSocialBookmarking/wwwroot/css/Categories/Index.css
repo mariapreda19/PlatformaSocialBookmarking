@@ -1,21 +1,168 @@
-﻿.image-container {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
-    gap: 16px;
-    margin: 0 auto;
+﻿[class="col-md-4 mb-4"] {
+    width: 30%;
+    height: 258px;
+    margin: 1em;
+    padding: 0;
+}
+
+h2 {
+    color: white;
+    margin: 1em;
+    text-align: center;
 }
 
 .card {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 0;
 }
 
-.card img {
-    width: 300px;
-    height: auto;
-    transition: transform 0.2s ease-in-out;
+
+    .card img {
+        border: none;
+        object-fit: cover;
+        z-index: 1;
+        width: 130%;
+        height: 130%;
+        transform: scale(1.1);
+    }
+
+.cover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0, 0.3);
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+.card h3 {
+    position: absolute;
+    color: white; /* Set the text color */
+    z-index: 3;
+    top: 35%;
+    left: 16%;
+}
+
+.card p {
+    position: absolute;
+    left: 50%;
+    color: black; /* Set the text color */
+    z-index: 3;
+    left: 16%;
+}
+
+.card-footer {
+    z-index: 4;
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    width: 100%;
+    height: 17%;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+p.category-text {
+    bottom: 9%;
+}
+
+p.user-text {
+    bottom: -30%;
+    ;
+}
+
+.btn {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    top: 50%; /* Adjust the position from the bottom as needed */
+    background-color: white;
+    color: black;
+    position: absolute;
+}
+
+    .btn:hover {
+        background-color: #171717;
+        color: white;
+    }
+
+    .btn.btn-primary {
+        visibility: visible; /* Hide the button by default */
+        left: 15%;
+    }
+
+    .btn.btn-success {
+        visibility: visible; /* Hide the button by default */
+        left: 55%;
+    }
+
+.btn-add {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    padding: 0.5em;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+}
+
+    .btn-add:hover {
+        background-color: goldenrod;
+        color: white;
+        transition: 0.2s;
+    }
+
+
+.card:hover .image-overlay {
+}
+
+.card-body {
+}
+
+.card:hover .card-body {
+}
+
+.card-title {
+}
+
+.card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+    .card-link:hover {
+    }
+
+.alert {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    color: grey;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.add-new-section {
+    text-align: center;
+    margin-top: 2px;
+}
+
+.add-new-text {
+    color: lightgrey;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+#missing_content {
+    color: grey;
+    font-size: 2em;
+    margin-top: 10px;
+}
