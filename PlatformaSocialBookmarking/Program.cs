@@ -49,6 +49,25 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+app.MapControllerRoute(
+    name: "HomePage",
+    pattern: "Home/Page",
+    defaults: new { controller = "Home", action = "Index" });
+
+app.MapControllerRoute(
+    name: "ProfilPersonal",
+    pattern: "MyBookmarks",
+    defaults: new { controller = "Bookmarks", action = "Index" });
+
+
+app.MapControllerRoute(
+    name: "Profil",
+    pattern: "Profil",
+    defaults: new { controller = "Profil", action = "Index" });
+
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
