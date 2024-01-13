@@ -45,6 +45,7 @@ namespace PlatformaSocialBookmarking.Controllers
             var userId = _userManager.GetUserId(User);
 
             var bookmarks = db.Bookmarks.Include(b => b.Bookmark_Has_Categories)
+                                            .ThenInclude(bhc => bhc.Category)
                                         .Include(b => b.User)
                                         .Where(b => b.UserId == userId)
                                         .Include(b => b.Bookmark_Has_Images)
@@ -58,11 +59,14 @@ namespace PlatformaSocialBookmarking.Controllers
             {
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
 
-                List<int> bookmarkIds = db.Bookmarks.Where(
-                                                     bk => bk.Title.Contains(search) ||
-                                                     bk.Description.Contains(search)).Select(b => b.Id).ToList();
+                List<int> bookmarkIds = db.Bookmarks.Where(bk => bk.Title.Contains(search) ||
+                                                           bk.Description.Contains(search) ||
+                                              bk.Bookmark_Has_Categories.Any(bhc => bhc.Category.CategoryName.Contains(search)))
+                                              .Select(b => b.Id)
+                                              .ToList();
                 bookmarks = db.Bookmarks.Where(bookmark => bookmarkIds.Contains(bookmark.Id))
                                         .Include(b => b.Bookmark_Has_Categories)
+                                            .ThenInclude(bhc => bhc.Category)
                                         .Include(b => b.User)
                                         .Where(b => b.UserId == userId)
                                         .Include(b => b.Bookmark_Has_Images)
