@@ -44,45 +44,49 @@ namespace PlatformaSocialBookmarking.Controllers
         {
             var userId = _userManager.GetUserId(User);
 
-            var bookmarks = db.Bookmarks.Include(b => b.Bookmark_Has_Categories)
-                                            .ThenInclude(bhc => bhc.Category)
-                                        .Include(b => b.User)
-                                        .Where(b => b.UserId == userId)
-                                        .Include(b => b.Bookmark_Has_Images)
-                                            .ThenInclude(bhi => bhi.Image)
-                                        .OrderBy(b => b.Date)
-                                        .ToList();
+            var bookmarks = db.Bookmarks
+                                       .Include(b => b.Bookmark_Has_Categories)
+                                           .ThenInclude(bhc => bhc.Category)
+                                               .ThenInclude(c => c.User)
+                                       .Include(b => b.Bookmark_Has_Images)
+                                           .ThenInclude(bhi => bhi.Image)
+                                       .Where(b => b.Bookmark_Has_Categories.Any(bhc => bhc.Category.User.Id == userId))
+                                       .OrderBy(b => b.Date)
+                                       .ToList();
 
             var search = "";
 
-            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            if (!string.IsNullOrEmpty(HttpContext.Request.Query["search"]))
             {
-                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
+                search = HttpContext.Request.Query["search"].ToString().Trim();
 
-                List<int> bookmarkIds = db.Bookmarks.Where(bk => bk.Title.Contains(search) ||
-                                                           bk.Description.Contains(search) ||
-                                              bk.Bookmark_Has_Categories.Any(bhc => bhc.Category.CategoryName.Contains(search)))
-                                              .Select(b => b.Id)
-                                              .ToList();
-                bookmarks = db.Bookmarks.Where(bookmark => bookmarkIds.Contains(bookmark.Id))
-                                        .Include(b => b.Bookmark_Has_Categories)
-                                            .ThenInclude(bhc => bhc.Category)
-                                        .Include(b => b.User)
-                                        .Where(b => b.UserId == userId)
-                                        .Include(b => b.Bookmark_Has_Images)
-                                            .ThenInclude(bhi => bhi.Image)
-                                        .OrderBy(b => b.Date)
-                                        .ToList();
+                List<int> bookmarkIds = db.Bookmarks
+                    .Where(bk => bk.Title.Contains(search) ||
+                                 bk.Description.Contains(search) ||
+                                 bk.Bookmark_Has_Categories.Any(bhc => bhc.Category.UserId == userId &&
+                                                                       bhc.Category.CategoryName.Contains(search)))
+                    .Select(b => b.Id)
+                    .ToList();
+
+                bookmarks = db.Bookmarks
+                    .Where(bookmark => bookmarkIds.Contains(bookmark.Id))
+                    .Include(b => b.Bookmark_Has_Categories)
+                        .ThenInclude(bhc => bhc.Category)
+                            .ThenInclude(c => c.User)
+                    .Include(b => b.User)
+                    .Include(b => b.Bookmark_Has_Images)
+                        .ThenInclude(bhi => bhi.Image)
+                    .OrderBy(b => b.Date)
+                    .ToList();
             }
-
 
             ViewBag.SearchString = search;
             ViewBag.Bookmarks = bookmarks;
+            ViewBag.userId = userId;
 
-
-            if (search != "")
+            if (!string.IsNullOrEmpty(search))
             {
-                ViewBag.BaseUrl = "/Bookmarks/Index/?search=" + search;
+                ViewBag.BaseUrl = $"/Bookmarks/Index/?search={search}";
             }
             else
             {
@@ -97,6 +101,7 @@ namespace PlatformaSocialBookmarking.Controllers
 
             return View(bookmarks);
         }
+
 
 
 

@@ -115,7 +115,7 @@ namespace PlatformaSocialBookmarking.Controllers
             if (category.UserId == _userManager.GetUserId(User))
             {
                 _db.Categories.Remove(category);
-                TempData["message"] = "Categoria a fost stearsa";
+                TempData["message"] = "Categoria a fost stearsa"; 
 
                 try
                 {
