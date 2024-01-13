@@ -43,7 +43,6 @@
                             <p class="category-text">Category: @bookmark.Bookmark_Has_Categories.First(bhc => bhc.Category.User.Id == @ViewBag.userId)?.Category?.CategoryName</p>
                         }
 
-
                     </div>
                     <div class=" =buttons">
                         <a asp-controller="Bookmarks" asp-action="Show" asp-route-id="@bookmark.Id" class="btn btn-primary">Show Bookmark</a>

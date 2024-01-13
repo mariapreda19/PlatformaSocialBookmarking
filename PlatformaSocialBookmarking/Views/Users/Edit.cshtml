@@ -1,53 +1,53 @@
 ﻿@model PlatformaSocialBookmarking.Models.ApplicationUser
 
-
+<link rel="stylesheet" href="~/css/Bookmarks/New.css" />
 
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Users",
        method: FormMethod.Post, routeValues: new { id = @Model.Id }))
 {
 
     <i class="bi bi-person"></i>
-    @Html.Label("UserName", "Nume utilizator", new { @class = "" })
+    @Html.Label("UserName", "Nume utilizator", new { @class = "form-control" })
 
     <br />
 
-    @Html.EditorFor(m => m.UserName)
+    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { style = "width: 100%;" }})
 
     <br />
 
     <i class="bi bi-envelope"></i>
-    @Html.Label("Email", "Email utilizator", new { @class = "" })
+    @Html.Label("Email", "Email utilizator", new { @class = "form-control" })
 
     <br />
 
-    @Html.EditorFor(m => m.Email)
+    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { style = "width: 100%;" }})
 
     <br />
 
     <i class="bi bi-phone"></i>
-    @Html.Label("PhoneNumber", "Numar telefon")
+    @Html.Label("PhoneNumber", "Numar telefon", new { @class = "form-control" })
 
     <br />
 
-    @Html.EditorFor(m => m.PhoneNumber)
-
-    <br />
-
-    <i class="bi bi-person"></i>
-    @Html.Label("FirstName", "Nume utilizator", new { @class = "" })
-
-    <br />
-
-    @Html.EditorFor(m => m.FirstName)
+    @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { style = "width: 100%;" }})
 
     <br />
 
     <i class="bi bi-person"></i>
-    @Html.Label("LastName", "Prenume utilizator", new { @class = "" })
+    @Html.Label("FirstName", "Nume utilizator", new { @class = "form-control" })
 
     <br />
 
-    @Html.EditorFor(m => m.LastName)
+    @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { style = "width: 100%;" }})
+
+    <br />
+
+    <i class="bi bi-person"></i>
+    @Html.Label("LastName", "Prenume utilizator", new { @class = "form-control" })
+
+    <br />
+
+    @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { style = "width: 100%;" }})
 
     <br />
 

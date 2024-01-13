@@ -166,3 +166,20 @@ p.user-text {
     font-size: 2em;
     margin-top: 10px;
 }
+
+.btn2{
+    z-index: 4;
+    background-color: #252525;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 0.5em;
+    text-decoration: none;
+}
+
+    .btn2:hover {
+        background-color: goldenrod;
+        color: white;
+        transition: 0.2s;
+    }
+   
