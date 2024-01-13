@@ -6,10 +6,12 @@
 
 <h2>Select a Category</h2>
 
+<a asp-controller="Categories" asp-action="New" class="btn btn-primary">Create New Category</a>
+
 <form asp-controller="Bookmark_Has_Categories" asp-action="Save" method="post">
     <input type="hidden" name="bookmarkId" value="@ViewBag.BookmarkId" />
     <div class="form-group">
-        <label for="selectedCategory">Category:</label>
+        <label for="selectedCategory">Select from existing ones:</label>
         <select class="form-control" id="selectedCategory" name="selectedCategory" asp-items="ViewBag.Categories"></select>
     </div>
     <br />

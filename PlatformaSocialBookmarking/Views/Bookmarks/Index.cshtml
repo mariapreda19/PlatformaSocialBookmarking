@@ -46,6 +46,8 @@
                         <img src="@bookmark.Bookmark_Has_Images.First()?.Image?.Url" alt="Image" class="img-thumbnail" id="mainImage-@bookmark.Id" />
                     }
 
+                    <div class="cover-overlay"></div>
+
                     <div class="card-footer">
                         <p class="user-text">Created by: @bookmark.User?.UserName</p>
                         @if (bookmark.Bookmark_Has_Categories != null && bookmark.Bookmark_Has_Categories.Any())

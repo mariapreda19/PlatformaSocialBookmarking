@@ -41,3 +41,16 @@ label {
         color: white;
         border-color: #171717;
     }
+
+.btn.btn-primary {
+    z-index: 4;
+    border: none;
+    border-radius: 16px;
+    top: 50%;
+    background-color: white;
+    color: black;
+    margin-bottom: 20px;
+
+}
+
+

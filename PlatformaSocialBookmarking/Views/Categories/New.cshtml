@@ -4,7 +4,8 @@
     ViewData["Title"] = "New Category";
 }
 
-<h2>@ViewData["Title"]</h2>
+<link rel="stylesheet" href="~/css/Categories/New.css"/>
+
 
 @if (TempData["message"] != null)
 {
@@ -13,21 +14,23 @@
     </div>
 }
 
-<form asp-action="New" method="post">
-    <div class="form-group">
-        <label asp-for="CategoryName" class="control-label">Category Name</label>
-        <input asp-for="CategoryName" class="form-control" />
-        <span asp-validation-for="CategoryName" class="text-danger"></span>
-    </div>
+<div class="form-wrapper">
+    <h2>@ViewData["Title"]</h2>
+    <form asp-action="New" method="post">
+        <div class="form-group">
+            <label asp-for="CategoryName" class="control-label">Category Name</label>
+            <input asp-for="CategoryName" class="form-control" />
+            <span asp-validation-for="CategoryName" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="CoverUrl" class="control-label">Cover URL</label>
-        <input asp-for="CoverUrl" class="form-control" />
-        <span asp-validation-for="CoverUrl" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="CoverUrl" class="control-label">Cover URL</label>
+            <input asp-for="CoverUrl" class="form-control" />
+            <span asp-validation-for="CoverUrl" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </div>
-</form>
+        
+        <button type="submit" class="btn-btn-primary">Create</button>
+
+    </form>
+</div>
